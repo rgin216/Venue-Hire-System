@@ -22,10 +22,24 @@ public class VenueHireSystem {
   public void createVenue(
       String venueName, String venueCode, String capacityInput, String hireFeeInput) {
     // TODO implement this method
+
+    // Ensuring venueName is not an empty/white space only string.
     if (venueName.trim().isEmpty()){
       MessageCli.VENUE_NOT_CREATED_EMPTY_NAME.printMessage();
-    } else{Venues.add(venueName);}
+      return;
+    }
     
+    // Ensuring venueCode doesn't already exist
+    if (!Venues.isEmpty()){
+      for (int i = 1; i <= Venues.size(); i += 4){
+        if (Venues.get(i).equals(venueCode)){ 
+          MessageCli.VENUE_NOT_CREATED_CODE_EXISTS.printMessage(Venues.get(i), Venues.get(i-1));
+          return;
+        }
+      } 
+    }
+
+    Venues.add(venueName);
     Venues.add(venueCode);
     Venues.add(capacityInput);
     Venues.add(hireFeeInput);
