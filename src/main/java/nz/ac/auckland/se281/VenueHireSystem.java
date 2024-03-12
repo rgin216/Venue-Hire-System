@@ -6,7 +6,7 @@ import nz.ac.auckland.se281.Types.FloralType;
 
 public class VenueHireSystem {
   // declaring fields
-
+  String dateInput = "";
   ArrayList<String> Venues = new ArrayList<String>();
 
   public VenueHireSystem() {}
@@ -64,23 +64,23 @@ public class VenueHireSystem {
       MessageCli.VENUE_NOT_CREATED_INVALID_NUMBER.printMessage("capacity", "");
       return;
     }
-    if (Integer.valueOf(capacityInput) < 0){
-          MessageCli.VENUE_NOT_CREATED_INVALID_NUMBER.printMessage("capacity", " positive");
-          return;
-        }
+    if (Integer.valueOf(capacityInput) < 0) {
+      MessageCli.VENUE_NOT_CREATED_INVALID_NUMBER.printMessage("capacity", " positive");
+      return;
+    }
 
     // Ensuring hireFeeInput is postive and whole integer
-    
+
     try {
-    Integer.parseInt(hireFeeInput);
-} catch (NumberFormatException e) {
-    MessageCli.VENUE_NOT_CREATED_INVALID_NUMBER.printMessage("hire fee", "");
-    return;
-}
-if (Integer.valueOf(hireFeeInput) < 0){
-  MessageCli.VENUE_NOT_CREATED_INVALID_NUMBER.printMessage("hire fee", " positive");
-  return;
-}
+      Integer.parseInt(hireFeeInput);
+    } catch (NumberFormatException e) {
+      MessageCli.VENUE_NOT_CREATED_INVALID_NUMBER.printMessage("hire fee", "");
+      return;
+    }
+    if (Integer.valueOf(hireFeeInput) < 0) {
+      MessageCli.VENUE_NOT_CREATED_INVALID_NUMBER.printMessage("hire fee", " positive");
+      return;
+    }
 
     Venues.add(venueName);
     Venues.add(venueCode);
@@ -91,10 +91,16 @@ if (Integer.valueOf(hireFeeInput) < 0){
 
   public void setSystemDate(String dateInput) {
     // TODO implement this method
+    MessageCli.DATE_SET.printMessage(dateInput);
   }
 
   public void printSystemDate() {
     // TODO implement this method
+    if (dateInput.isEmpty()) {
+      System.out.println("Current system date is not set.");
+    } else {
+      MessageCli.CURRENT_DATE.printMessage(dateInput);
+    }
   }
 
   public void makeBooking(String[] options) {
