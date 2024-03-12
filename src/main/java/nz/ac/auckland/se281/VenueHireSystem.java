@@ -15,14 +15,17 @@ public class VenueHireSystem {
   public void printVenues() {
     // TODO implement this method
     if (Venues.isEmpty()){
-      MessageCli.NO_VENUES.printMessage();
+      MessageCli.NO_VENUES.printMessage(); 
     }
   }
 
   public void createVenue(
       String venueName, String venueCode, String capacityInput, String hireFeeInput) {
     // TODO implement this method
-    Venues.add(venueName);
+    if (venueName.trim().isEmpty()){
+      MessageCli.VENUE_NOT_CREATED_EMPTY_NAME.printMessage();
+    } else{Venues.add(venueName);}
+    
     Venues.add(venueCode);
     Venues.add(capacityInput);
     Venues.add(hireFeeInput);
