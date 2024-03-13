@@ -432,6 +432,18 @@ public class MainTest {
       assertDoesNotContain("'HUD14D8O' on 27/03/2024", true);
       assertDoesNotContain("'ZP4HRCZ4' on 28/05/2024", true);
     }
+    @Test
+    public void T2_16_make_booking_with_code_that_doesnt_exist() throws Exception {
+      runCommands(unpack(CREATE_TEN_VENUES,
+        
+          SET_DATE,
+          "26/02/2024", //
+          MAKE_BOOKING,
+          options("ZZZ", "27/02/2024", "client001@email.com", "70")));
+
+      assertContains("Booking not made: there is no venue with code 'ZZZ'.");
+      assertDoesNotContain("Successfully created booking", true);
+    }
   }
 
   @FixMethodOrder(MethodSorters.NAME_ASCENDING)

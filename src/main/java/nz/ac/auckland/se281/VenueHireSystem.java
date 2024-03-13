@@ -114,10 +114,25 @@ public class VenueHireSystem {
     if (!dateSet){
       MessageCli.BOOKING_NOT_MADE_DATE_NOT_SET.printMessage();
       return;
-    } else if (Venues.size() == 0){
+    } if (Venues.size() == 0){
       MessageCli.BOOKING_NOT_MADE_NO_VENUES.printMessage();
       return;
     }
+
+    //Checking if the venue code inputed exists in the venue system.
+    int match = 0;
+    for (int i = 1; i < Venues.size(); i += 4){
+      if (Venues.get(i).equals(options[0])){
+        match = 1;
+      }
+    }
+    if (match != 1){
+      MessageCli.BOOKING_NOT_MADE_VENUE_NOT_FOUND.printMessage(options[0]);
+      return;
+    }
+
+
+
 
   }
 
