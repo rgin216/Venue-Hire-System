@@ -8,6 +8,8 @@ public class VenueHireSystem {
   // declaring fields
   String dateInput = "";
   ArrayList<String> Venues = new ArrayList<String>();
+  boolean dateSet = false;
+
 
   public VenueHireSystem() {}
 
@@ -92,6 +94,8 @@ public class VenueHireSystem {
   public void setSystemDate(String dateInput) {
     // TODO implement this method
     MessageCli.DATE_SET.printMessage(dateInput);
+    this.dateInput = dateInput;
+    dateSet = true;
   }
 
   public void printSystemDate() {
@@ -105,6 +109,16 @@ public class VenueHireSystem {
 
   public void makeBooking(String[] options) {
     // TODO implement this method
+
+    //Checking if there is a set date, if there is at least 1 venue
+    if (!dateSet){
+      MessageCli.BOOKING_NOT_MADE_DATE_NOT_SET.printMessage();
+      return;
+    } else if (Venues.size() == 0){
+      MessageCli.BOOKING_NOT_MADE_NO_VENUES.printMessage();
+      return;
+    }
+
   }
 
   public void printBookings(String venueCode) {
