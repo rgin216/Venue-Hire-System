@@ -28,11 +28,9 @@ public class VenueHireSystem {
   public String getVenueName(){
     return this.venueName;
   }
-
   public String getVenueCode(){
     return this.venueCode;
   }
-
   public String getCapacityInput(){
     return this.capacityInput;
   }
@@ -41,27 +39,31 @@ public class VenueHireSystem {
   }
 
   public void printVenues() {
-    // TODO implement this method
+    // array of strings of the words of each number from 2-9
     String[] numbers = {"two", "three", "four", "five", "six", "seven", "eight", "nine"};
+
+    //When theres only one venue
     if (Venues.isEmpty()) {
       MessageCli.NO_VENUES.printMessage();
     } else if (Venues.size() == 1) {
       MessageCli.NUMBER_VENUES.printMessage("is", "one", "");
       MessageCli.VENUE_ENTRY.printMessage(
           Venues.get(0).getVenueName(), Venues.get(0).getVenueCode(), Venues.get(0).getCapacityInput(), Venues.get(0).getHireFeeInput(), "");
-    } else if (Venues.size() < 10) {
-
-      MessageCli.NUMBER_VENUES.printMessage("are", numbers[(Venues.size() / 4) - 2], "s");
-      for (int i = 0; i < Venues.size(); i += 4) {
-        //MessageCli.VENUE_ENTRY.printMessage(
-            //Venues.get(i), Venues.get(i + 1), Venues.get(i + 2), Venues.get(i + 3), "");
+    } 
+    
+    //When theres 2-9 venues
+    else if (Venues.size() < 10) {
+      MessageCli.NUMBER_VENUES.printMessage("are", numbers[Venues.size()-2], "s");
+      for (int i = 0; i < Venues.size(); i++) {
+        MessageCli.VENUE_ENTRY.printMessage(
+          Venues.get(i).getVenueName(), Venues.get(i).getVenueCode(), Venues.get(i).getCapacityInput(), Venues.get(i).getHireFeeInput(), "");
       }
     } else {
-      MessageCli.NUMBER_VENUES.printMessage("are", String.valueOf(Venues.size() / 4), "s");
-      for (int i = 0; i < Venues.size(); i += 4) {
+      MessageCli.NUMBER_VENUES.printMessage("are", String.valueOf(Venues.size()), "s");
+      for (int i = 0; i < Venues.size(); i++) {
         System.out.println(i);
-        //MessageCli.VENUE_ENTRY.printMessage(
-            //Venues.get(i), Venues.get(i + 1), Venues.get(i + 2), Venues.get(i + 3), "");
+        MessageCli.VENUE_ENTRY.printMessage(
+          Venues.get(i).getVenueName(), Venues.get(i).getVenueCode(), Venues.get(i).getCapacityInput(), Venues.get(i).getHireFeeInput(), "");
       }
     }
   }
@@ -78,9 +80,9 @@ public class VenueHireSystem {
 
     // Ensuring venueCode doesn't already exist
     if (!Venues.isEmpty()) {
-      for (int i = 1; i <= Venues.size(); i++) {
+      for (int i = 0; i < Venues.size(); i++) {
         if (Venues.get(i).getVenueCode().equals(venueCode)) {
-          MessageCli.VENUE_NOT_CREATED_CODE_EXISTS.printMessage(Venues.get(i).getVenueCode(), Venues.get(i-1).getVenueCode());
+          MessageCli.VENUE_NOT_CREATED_CODE_EXISTS.printMessage(Venues.get(i).getVenueCode(), Venues.get(i).getVenueName());
           return;
         }
       }
