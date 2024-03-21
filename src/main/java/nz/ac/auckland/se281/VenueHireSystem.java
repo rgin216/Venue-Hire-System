@@ -6,23 +6,34 @@ import nz.ac.auckland.se281.Types.FloralType;
 
 public class VenueHireSystem {
   // declaring fields
-  String dateInput = "";
-  ArrayList<String> Venues = new ArrayList<String>();
-  boolean dateSet = false;
+  private String dateInput = "";
+  private ArrayList<VenueHireSystem> Venues = new ArrayList<VenueHireSystem>();
+  private boolean dateSet = false;
+  private ArrayList<String> Bookings = new ArrayList<String>();
+  private String venueName;
+  private String venueCode;
+  private String capacityInput;
+  private String hireFeeInput;
 
 
-  public VenueHireSystem() {}
+  public VenueHireSystem(String venueName, String venueCode, String capacityInput, String hireFeeInput) {
+    this.venueName = venueName;
+    this.venueCode = venueCode;
+    this.capacityInput = capacityInput;
+    this.hireFeeInput = hireFeeInput;
+    
+  }
 
   public void printVenues() {
     // TODO implement this method
     String[] numbers = {"two", "three", "four", "five", "six", "seven", "eight", "nine"};
     if (Venues.isEmpty()) {
       MessageCli.NO_VENUES.printMessage();
-    } else if (Venues.size() == 4) {
+    } else if (Venues.size() == 1) {
       MessageCli.NUMBER_VENUES.printMessage("is", "one", "");
       MessageCli.VENUE_ENTRY.printMessage(
           Venues.get(0), Venues.get(1), Venues.get(2), Venues.get(3), "");
-    } else if (Venues.size() < 40) {
+    } else if (Venues.size() < 10) {
 
       MessageCli.NUMBER_VENUES.printMessage("are", numbers[(Venues.size() / 4) - 2], "s");
       for (int i = 0; i < Venues.size(); i += 4) {
@@ -84,10 +95,8 @@ public class VenueHireSystem {
       return;
     }
 
-    Venues.add(venueName);
-    Venues.add(venueCode);
-    Venues.add(capacityInput);
-    Venues.add(hireFeeInput);
+    VenueHireSystem venue = new VenueHireSystem(venueName, venueCode, capacityInput, hireFeeInput);
+    Venues.add(venue);
     MessageCli.VENUE_SUCCESSFULLY_CREATED.printMessage(venueName, venueCode);
   }
 
@@ -130,11 +139,39 @@ public class VenueHireSystem {
       MessageCli.BOOKING_NOT_MADE_VENUE_NOT_FOUND.printMessage(options[0]);
       return;
     }
+    
+    match = 0;
+    
+    int bookingCode;
+    if (!(Bookings.isEmpty())){
+      for (int i = 1; i < Bookings.size(); i += 4){
+        if (Bookings.get(i).equals(options[0])){
+          match = 1;
+          bookingCode = i;
+        }
+      }
+      if (match == 1){
+        MessageCli.BOOKING_NOT_MADE_VENUE_ALREADY_BOOKED.printMessage(Bookings.get(bookingCode-1), Bookings.get(bookingCode));
+        return;
+      }
+    } 
+
+    
+    String[] dateParts = dateInput.split("/");
+
+    String day = dateParts[0]; 
+    String month = dateParts[1]; 
+    String year = dateParts[2];  
 
 
+    Bookings.add(options[0]);
+    Bookings.add(options[1]);
+    Bookings.add(options[2]);
+    Bookings.add(options[3]);
 
 
   }
+
 
   public void printBookings(String venueCode) {
     // TODO implement this method
