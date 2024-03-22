@@ -444,6 +444,17 @@ public class MainTest {
       assertContains("Booking not made: there is no venue with code 'ZZZ'.");
       assertDoesNotContain("Successfully created booking", true);
     }
+    @Test
+    public void T2_17_ensure_booking_date_isnt_inPast() throws Exception {
+      runCommands(unpack(CREATE_TEN_VENUES,
+        SET_DATE,
+        "26/02/2024", //
+        MAKE_BOOKING,
+        options("FFH", "27/02/1999", "client001@email.com", "70")));
+
+        assertContains(
+          "Booking not made: '27/02/1999' is in the past (system date is 26/02/2024).");
+    }
   }
 
   @FixMethodOrder(MethodSorters.NAME_ASCENDING)

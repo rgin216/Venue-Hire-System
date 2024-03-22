@@ -9,7 +9,7 @@ public class VenueHireSystem {
   private String dateInput = "";
   private ArrayList<VenueHireSystem> Venues = new ArrayList<VenueHireSystem>();
   private boolean dateSet = false;
-  private ArrayList<String> Bookings = new ArrayList<String>();
+  private ArrayList<BookingSystem> Bookings = new ArrayList<BookingSystem>();
   private String venueName;
   private String venueCode;
   private String capacityInput;
@@ -152,11 +152,13 @@ public class VenueHireSystem {
   public void makeBooking(String[] options) {
     // TODO implement this method
 
-    // Checking if there is a set date, if there is at least 1 venue
+    // Checking if there is a set date
     if (!dateSet) {
       MessageCli.BOOKING_NOT_MADE_DATE_NOT_SET.printMessage();
       return;
     }
+
+    //Checking if there is at least one venue in the Hire system
     if (Venues.size() == 0) {
       MessageCli.BOOKING_NOT_MADE_NO_VENUES.printMessage();
       return;
@@ -168,38 +170,38 @@ public class VenueHireSystem {
       if (Venues.get(i).getVenueCode().equals(options[0])) {
         match = 1;
       }
-    }
-    if (match != 1) {
+    } if (match != 1) {
       MessageCli.BOOKING_NOT_MADE_VENUE_NOT_FOUND.printMessage(options[0]);
       return;
     }
 
-    match = 0;
+    // Checkign if the booking date is not earlier than the set date
+    String[] setDateParts = dateInput.split("/");
 
-    int bookingCode;
-    if (!(Bookings.isEmpty())) {
-      for (int i = 1; i < Bookings.size(); i += 4) {
-        if (Bookings.get(i).equals(options[0])) {
-          match = 1;
-          bookingCode = i;
-        }
-      }
-      if (match == 1) {
-        // MessageCli.BOOKING_NOT_MADE_VENUE_ALREADY_BOOKED.printMessage(Bookings.get(bookingCode-1), Bookings.get(bookingCode));
-        return;
-      }
+    String setDay = setDateParts[0];
+    String setMonth = setDateParts[1];
+    String setYear = setDateParts[2];
+
+    String[] bookingDateParts = options[1].split("/");
+    String bookingDay = bookingDateParts[0];
+    String bookingMonth = bookingDateParts[1];
+    String bookingYear = bookingDateParts[2];
+
+    if (Integer.valueOf(setYear)>Integer.valueOf(bookingYear)){
+      MessageCli.BOOKING_NOT_MADE_PAST_DATE.printMessage(options[1], dateInput);
+      return;
+    } else if (Integer.valueOf(setMonth)>Integer.valueOf(bookingMonth)){
+      MessageCli.BOOKING_NOT_MADE_PAST_DATE.printMessage(options[1], dateInput);
+      return;
+    } else if (Integer.valueOf(setDay)>Integer.valueOf(bookingDay)){
+      MessageCli.BOOKING_NOT_MADE_PAST_DATE.printMessage(options[1], dateInput);
+      return;
     }
+    
 
-    String[] dateParts = dateInput.split("/");
-
-    String day = dateParts[0];
-    String month = dateParts[1];
-    String year = dateParts[2];
-
-    Bookings.add(options[0]);
-    Bookings.add(options[1]);
-    Bookings.add(options[2]);
-    Bookings.add(options[3]);
+    //If no error comes up, a new Booking is created, and added to the list of Bookings.
+    BookingSystem Booking = new BookingSystem(options[0], options[1], options[2], Integer.valueOf(options[3])); 
+    Bookings.add(Booking);
   }
 
   public void printBookings(String venueCode) {
