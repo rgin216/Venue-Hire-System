@@ -448,7 +448,7 @@ public class MainTest {
     public void T2_17_ensure_booking_date_isnt_inPast() throws Exception {
       runCommands(unpack(CREATE_TEN_VENUES,
         SET_DATE,
-        "26/02/2024", //
+        "26/02/2024",
         MAKE_BOOKING,
         options("FFH", "27/02/1999", "client001@email.com", "70")));
 

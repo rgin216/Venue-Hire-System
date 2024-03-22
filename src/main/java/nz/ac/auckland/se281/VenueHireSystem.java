@@ -168,6 +168,7 @@ public class VenueHireSystem {
     int match = 0;
     for (int i = 0; i < Venues.size(); i++) {
       if (Venues.get(i).getVenueCode().equals(options[0])) {
+        venueName = Venues.get(i).getVenueName();
         match = 1;
       }
     } if (match != 1) {
@@ -175,7 +176,7 @@ public class VenueHireSystem {
       return;
     }
 
-    // Checkign if the booking date is not earlier than the set date
+    // Checking if the booking date is not earlier than the set date
     String[] setDateParts = dateInput.split("/");
 
     String setDay = setDateParts[0];
@@ -189,6 +190,7 @@ public class VenueHireSystem {
 
     if (Integer.valueOf(setYear)>Integer.valueOf(bookingYear)){
       MessageCli.BOOKING_NOT_MADE_PAST_DATE.printMessage(options[1], dateInput);
+      System.out.println(setYear + bookingYear);
       return;
     } else if (Integer.valueOf(setMonth)>Integer.valueOf(bookingMonth)){
       MessageCli.BOOKING_NOT_MADE_PAST_DATE.printMessage(options[1], dateInput);
@@ -202,6 +204,7 @@ public class VenueHireSystem {
     //If no error comes up, a new Booking is created, and added to the list of Bookings.
     BookingSystem Booking = new BookingSystem(options[0], options[1], options[2], Integer.valueOf(options[3])); 
     Bookings.add(Booking);
+    MessageCli.MAKE_BOOKING_SUCCESSFUL.printMessage(BookingReferenceGenerator.generateBookingReference(), venueName, options[1], options[3]);
   }
 
   public void printBookings(String venueCode) {
