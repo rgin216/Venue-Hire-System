@@ -455,6 +455,20 @@ public class MainTest {
         assertContains(
           "Booking not made: '27/02/1999' is in the past (system date is 26/02/2024).");
     }
+    @Test
+    public void T2_18_make_booking_too_MANY_attendees() throws Exception {
+      runCommands(
+          unpack(
+              CREATE_TEN_VENUES,
+              SET_DATE,
+              "26/02/2024", //
+              MAKE_BOOKING,
+              options("GGG", "28/05/2024", "client999@email.com", "270")));
+
+      assertContains("Number of attendees adjusted from 270 to 260, as the venue capacity is 260.");
+      assertContains("Successfully created booking 'HUD14D8O'");
+      assertDoesNotContain("Booking not made", true);
+    }
   }
 
   @FixMethodOrder(MethodSorters.NAME_ASCENDING)

@@ -158,20 +158,21 @@ public class VenueHireSystem {
       return;
     }
 
-    //Checking if there is at least one venue in the Hire system
+    // Checking if there is at least one venue in the Hire system
     if (Venues.size() == 0) {
       MessageCli.BOOKING_NOT_MADE_NO_VENUES.printMessage();
       return;
     }
 
     // Checking if the venue code inputed exists in the venue system.
-    int match = 0;
+    int match = -1;
     for (int i = 0; i < Venues.size(); i++) {
       if (Venues.get(i).getVenueCode().equals(options[0])) {
         venueName = Venues.get(i).getVenueName();
-        match = 1;
+        match = i;
       }
-    } if (match != 1) {
+    }
+    if (match == -1) {
       MessageCli.BOOKING_NOT_MADE_VENUE_NOT_FOUND.printMessage(options[0]);
       return;
     }
@@ -188,46 +189,59 @@ public class VenueHireSystem {
     String bookingMonth = bookingDateParts[1];
     String bookingYear = bookingDateParts[2];
 
-    if (Integer.valueOf(setYear)>Integer.valueOf(bookingYear)){
+    if (Integer.valueOf(setYear) > Integer.valueOf(bookingYear)) {
       MessageCli.BOOKING_NOT_MADE_PAST_DATE.printMessage(options[1], dateInput);
       System.out.println(setYear + bookingYear);
       return;
-    } else if (Integer.valueOf(setMonth)>Integer.valueOf(bookingMonth)){
+    } else if (Integer.valueOf(setMonth) > Integer.valueOf(bookingMonth)) {
       MessageCli.BOOKING_NOT_MADE_PAST_DATE.printMessage(options[1], dateInput);
       return;
-    } else if (Integer.valueOf(setDay)>Integer.valueOf(bookingDay)){
+    } else if (Integer.valueOf(setDay) > Integer.valueOf(bookingDay)) {
       MessageCli.BOOKING_NOT_MADE_PAST_DATE.printMessage(options[1], dateInput);
       return;
     }
-    
+
     // Check if that venuecode has already dates made on that same day
-    ArrayList<Integer> matches = new ArrayList<Integer>();
     
-    for (int i = 0; i<Bookings.size(); i++){
-      if (options[0].equals(Bookings.get(i).getBookingVenueCode())){
+    ArrayList<Integer> matches = new ArrayList<Integer>();
+
+    for (int i = 0; i < Bookings.size(); i++) {
+      if (options[0].equals(Bookings.get(i).getBookingVenueCode())) {
         matches.add(i);
       }
     }
 
-    if (match != -1){
-      for (int i : matches){
+    if (matches.size() > 0) {
+      for (int i : matches) {
         String[] existingDateParts = Bookings.get(i).getRequestedDate().split("/");
         System.out.println(existingDateParts);
         String existingDay = existingDateParts[0];
         String existingMonth = existingDateParts[1];
         String existingYear = existingDateParts[2];
-        if (existingDay.equals(bookingDay) && existingMonth.equals(bookingMonth) && existingYear.equals(bookingYear)){
-            MessageCli.BOOKING_NOT_MADE_VENUE_ALREADY_BOOKED.printMessage(venueName, options[1]);
+        if (existingDay.equals(bookingDay)
+            && existingMonth.equals(bookingMonth)
+            && existingYear.equals(bookingYear)) {
+          MessageCli.BOOKING_NOT_MADE_VENUE_ALREADY_BOOKED.printMessage(venueName, options[1]);
           return;
         }
       }
     }
-    
 
-    //If no error comes up, a new Booking is created, and added to the list of Bookings.
-    BookingSystem Booking = new BookingSystem(options[0], options[1], options[2], Integer.valueOf(options[3])); 
+    // Altering numAttendees to 25% or 100% of the venue's capacity.
+    if (Integer.valueOf(options[3]) < (Integer.valueOf(Venues.get(match).getCapacityInput()))/4){
+      String newAttendees = String.valueOf((Integer.valueOf(Venues.get(match).getCapacityInput()))/4);
+      MessageCli.BOOKING_ATTENDEES_ADJUSTED.printMessage(options[3], newAttendees, Venues.get(match).getCapacityInput());
+    } else if (Integer.valueOf(options[3]) > (Integer.valueOf(Venues.get(match).getCapacityInput()))){
+      String newAttendees = String.valueOf(Integer.valueOf(Venues.get(match).getCapacityInput()));
+      MessageCli.BOOKING_ATTENDEES_ADJUSTED.printMessage(options[3], newAttendees, Venues.get(match).getCapacityInput());
+    }
+    
+    // If no error comes up, a new Booking is created, and added to the list of Bookings.
+    BookingSystem Booking =
+        new BookingSystem(options[0], options[1], options[2], Integer.valueOf(options[3]));
     Bookings.add(Booking);
-    MessageCli.MAKE_BOOKING_SUCCESSFUL.printMessage(BookingReferenceGenerator.generateBookingReference(), venueName, options[1], options[3]);
+    MessageCli.MAKE_BOOKING_SUCCESSFUL.printMessage(
+        BookingReferenceGenerator.generateBookingReference(), venueName, options[1], options[3]);
   }
 
   public void printBookings(String venueCode) {
