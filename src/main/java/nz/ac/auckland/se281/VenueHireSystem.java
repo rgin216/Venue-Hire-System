@@ -200,6 +200,29 @@ public class VenueHireSystem {
       return;
     }
     
+    // Check if that venuecode has already dates made on that same day
+    ArrayList<Integer> matches = new ArrayList<Integer>();
+    
+    for (int i = 0; i<Bookings.size(); i++){
+      if (options[0].equals(Bookings.get(i).getBookingVenueCode())){
+        matches.add(i);
+      }
+    }
+
+    if (match != -1){
+      for (int i : matches){
+        String[] existingDateParts = Bookings.get(i).getRequestedDate().split("/");
+        System.out.println(existingDateParts);
+        String existingDay = existingDateParts[0];
+        String existingMonth = existingDateParts[1];
+        String existingYear = existingDateParts[2];
+        if (existingDay.equals(bookingDay) && existingMonth.equals(bookingMonth) && existingYear.equals(bookingYear)){
+            MessageCli.BOOKING_NOT_MADE_VENUE_ALREADY_BOOKED.printMessage(venueName, options[1]);
+          return;
+        }
+      }
+    }
+    
 
     //If no error comes up, a new Booking is created, and added to the list of Bookings.
     BookingSystem Booking = new BookingSystem(options[0], options[1], options[2], Integer.valueOf(options[3])); 

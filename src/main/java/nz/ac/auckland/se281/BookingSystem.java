@@ -12,5 +12,12 @@ public class BookingSystem {
     this.customerEmail = customerEmail;
     this.numAttendees = numAttendees;
   }
+  public String getBookingVenueCode(){
+    return venueCode;
+  }
 
+  public String getRequestedDate(){
+    return requestedDate;
+  }
 }
+
