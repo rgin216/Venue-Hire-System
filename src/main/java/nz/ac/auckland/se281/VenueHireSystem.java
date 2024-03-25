@@ -1,8 +1,6 @@
 package nz.ac.auckland.se281;
 
 import java.util.ArrayList;
-import java.util.Collections;
-
 import nz.ac.auckland.se281.Types.CateringType;
 import nz.ac.auckland.se281.Types.FloralType;
 
@@ -242,7 +240,6 @@ public class VenueHireSystem {
 
     // If no error comes up, a new Booking is created, and added to the list of Bookings.
     String newBookingReference = BookingReferenceGenerator.generateBookingReference();
-    BookingSystem Booking =
         new BookingSystem(
             options[0], options[1], options[2], Integer.valueOf(options[3]), newBookingReference);
     Bookings.add(Booking);
@@ -250,52 +247,84 @@ public class VenueHireSystem {
         newBookingReference, venueName, options[1], options[3]);
   }
 
-  public String getNextAvailableDate(VenueHireSystem Venue){
-    //Getting day component of system date
+  public String getNextAvailableDate(VenueHireSystem Venue) {
+    // Getting day component of system date
     String[] setDateParts = dateInput.split("/");
     int setDay = Integer.valueOf(setDateParts[0]);
     String[] bookingDateParts;
-    //Finding all instances of venuecode's booking day
+    // Finding all instances of venuecode's booking day
     ArrayList<Integer> Matches = new ArrayList<Integer>();
     for (int i = 0; i < Bookings.size(); i++) {
-       if (Venue.getVenueCode().equals(Bookings.get(i).getBookingVenueCode())) {
+      if (Venue.getVenueCode().equals(Bookings.get(i).getBookingVenueCode())) {
         bookingDateParts = Bookings.get(i).getRequestedDate().split("/");
         Matches.add(Integer.valueOf(bookingDateParts[0]));
       }
     }
-    
+
     // If theres no bookings, return set date
-    if (Matches.size() == 0){
+    if (Matches.size() == 0) {
       return dateInput;
     }
 
     int tempDay = setDay;
     boolean match = false;
 
-    for (int i = 0; i < 32; i++){
-      for (int day : Matches){
-        if (day == tempDay){
+    for (int i = 0; i < 32; i++) {
+      for (int day : Matches) {
+        if (day == tempDay) {
           tempDay++;
           match = true;
         }
       }
     }
 
-    //If there was no match, there is an available booking today
-    if (!match){
+    // If there was no match, there is an available booking today
+    if (!match) {
       return dateInput;
     }
 
-    //If there was a match, tempDay is the new earliest booking date
-    if (tempDay < 10){
+    // If there was a match, tempDay is the new earliest booking date
+    if (tempDay < 10) {
       return ("0" + tempDay + "/" + setDateParts[1] + "/" + setDateParts[2]);
     }
-    return (tempDay + "/" + setDateParts[1] + "/" + setDateParts[2]);  
+    return (tempDay + "/" + setDateParts[1] + "/" + setDateParts[2]);
   }
 
-
   public void printBookings(String venueCode) {
-    // TODO implement this method
+    // Getting the name of the venue
+    boolean match = false;
+    int matchVenue;
+    for (int i = 0; i < Venues.size(); i++) {
+      if (Venues.get(i).getVenueCode().equals(venueCode)) {
+        String venueName = Venues.get(i).getVenueName();
+        match = true;
+        matchVenue = i;
+      }
+    }
+
+    // If no match, print no code exists and return
+    if (!match) {
+      MessageCli.PRINT_BOOKINGS_VENUE_NOT_FOUND.printMessage(venueCode);
+      return;
+    }
+
+    ArrayList<Integer> MatchIndex = new ArrayList<Integer>();
+    for (int i = 0; i < Bookings.size(); i++) {
+      if (venueCode.equals(Bookings.get(i).getBookingVenueCode())) {
+        MatchIndex.add(i);
+      }
+    }
+    // If there is no matches, there are no bookings for that code
+    if (MatchIndex.size() == 0) {
+      MessageCli.PRINT_BOOKINGS_HEADER.printMessage(venueName);
+      MessageCli.PRINT_BOOKINGS_NONE.printMessage(venueName);
+      return;
+    }
+
+    MessageCli.PRINT_BOOKINGS_HEADER.printMessage(venueName);
+    for (int i = 0; i < MatchIndex.size(); i++) {
+      MessageCli.PRINT_BOOKINGS_ENTRY.printMessage(Bookings.get(MatchIndex.get(i)).getBookingReference(), Bookings.get(MatchIndex.get(i)).getRequestedDate());
+    }
   }
 
   public void addCateringService(String bookingReference, CateringType cateringType) {
