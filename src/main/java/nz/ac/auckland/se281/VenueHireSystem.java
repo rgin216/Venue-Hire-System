@@ -254,13 +254,12 @@ public class VenueHireSystem {
     //Getting day component of system date
     String[] setDateParts = dateInput.split("/");
     int setDay = Integer.valueOf(setDateParts[0]);
-    
+    String[] bookingDateParts;
     //Finding all instances of venuecode's booking day
     ArrayList<Integer> Matches = new ArrayList<Integer>();
-
     for (int i = 0; i < Bookings.size(); i++) {
-      if (Venue.getVenueCode().equals(Bookings.get(i).getBookingVenueCode())) {
-        String[] bookingDateParts = Bookings.get(i).getBookingVenueCode().split("/");
+       if (Venue.getVenueCode().equals(Bookings.get(i).getBookingVenueCode())) {
+        bookingDateParts = Bookings.get(i).getRequestedDate().split("/");
         Matches.add(Integer.valueOf(bookingDateParts[0]));
       }
     }
@@ -288,26 +287,10 @@ public class VenueHireSystem {
     }
 
     //If there was a match, tempDay is the new earliest booking date
-    return (tempDay + "/" + setDateParts[1] + setDateParts[2]);
-    
-      
-    // while (true) {
-    //   for (int iterDate: Matches) {
-    //     if (iterDate == tempDay) {
-    //       match = true;
-    //       break;
-    //     }
-        
-    //     if (match) {
-    //       tempDay += 1;
-    //       match = false;
-    //       continue;
-    //     }
-
-    //     return(tempDay + "/" + setDateParts[1]+"/"+setDateParts[2]);
-    //   }
-    // }    
-
+    if (tempDay < 10){
+      return ("0" + tempDay + "/" + setDateParts[1] + "/" + setDateParts[2]);
+    }
+    return (tempDay + "/" + setDateParts[1] + "/" + setDateParts[2]);  
   }
 
 
