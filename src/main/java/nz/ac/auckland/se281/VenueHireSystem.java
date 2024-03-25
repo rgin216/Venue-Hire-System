@@ -1,6 +1,8 @@
 package nz.ac.auckland.se281;
 
 import java.util.ArrayList;
+import java.util.Collections;
+
 import nz.ac.auckland.se281.Types.CateringType;
 import nz.ac.auckland.se281.Types.FloralType;
 
@@ -48,7 +50,7 @@ public class VenueHireSystem {
     if (Venues.isEmpty()) {
       MessageCli.NO_VENUES.printMessage();
     } else if (Venues.size() == 1) {
-      MessageCli.NUMBER_VENUES.printMessage("is", "one", "");
+      MessageCli.NUMBER_VENUES.printMessage("is", "one", getNextAvailableDate(Venues.get(0)));
       MessageCli.VENUE_ENTRY.printMessage(
           Venues.get(0).getVenueName(),
           Venues.get(0).getVenueCode(),
@@ -66,7 +68,7 @@ public class VenueHireSystem {
             Venues.get(i).getVenueCode(),
             Venues.get(i).getCapacityInput(),
             Venues.get(i).getHireFeeInput(),
-            "");
+            getNextAvailableDate(Venues.get(i)));
       }
     } else {
       MessageCli.NUMBER_VENUES.printMessage("are", String.valueOf(Venues.size()), "s");
@@ -77,14 +79,13 @@ public class VenueHireSystem {
             Venues.get(i).getVenueCode(),
             Venues.get(i).getCapacityInput(),
             Venues.get(i).getHireFeeInput(),
-            "");
+            getNextAvailableDate(Venues.get(i)));
       }
     }
   }
 
   public void createVenue(
       String venueName, String venueCode, String capacityInput, String hireFeeInput) {
-    // TODO implement this method
 
     // Ensuring venueName is not an empty/white space only string.
     if (venueName.trim().isEmpty()) {
@@ -134,14 +135,12 @@ public class VenueHireSystem {
   }
 
   public void setSystemDate(String dateInput) {
-    // TODO implement this method
     MessageCli.DATE_SET.printMessage(dateInput);
     this.dateInput = dateInput;
     dateSet = true;
   }
 
   public void printSystemDate() {
-    // TODO implement this method
     if (dateInput.isEmpty()) {
       System.out.println("Current system date is not set.");
     } else {
@@ -150,7 +149,6 @@ public class VenueHireSystem {
   }
 
   public void makeBooking(String[] options) {
-    // TODO implement this method
 
     // Checking if there is a set date
     if (!dateSet) {
@@ -202,17 +200,17 @@ public class VenueHireSystem {
     }
 
     // Check if that venuecode has already dates made on that same day
-    
-    ArrayList<Integer> matches = new ArrayList<Integer>();
+
+    ArrayList<Integer> Matches = new ArrayList<Integer>();
 
     for (int i = 0; i < Bookings.size(); i++) {
       if (options[0].equals(Bookings.get(i).getBookingVenueCode())) {
-        matches.add(i);
+        Matches.add(i);
       }
     }
 
-    if (matches.size() > 0) {
-      for (int i : matches) {
+    if (Matches.size() > 0) {
+      for (int i : Matches) {
         String[] existingDateParts = Bookings.get(i).getRequestedDate().split("/");
         System.out.println(existingDateParts);
         String existingDay = existingDateParts[0];
@@ -228,21 +226,90 @@ public class VenueHireSystem {
     }
 
     // Altering numAttendees to 25% or 100% of the venue's capacity.
-    if (Integer.valueOf(options[3]) < (Integer.valueOf(Venues.get(match).getCapacityInput()))/4){
-      String newAttendees = String.valueOf((Integer.valueOf(Venues.get(match).getCapacityInput()))/4);
-      MessageCli.BOOKING_ATTENDEES_ADJUSTED.printMessage(options[3], newAttendees, Venues.get(match).getCapacityInput());
-    } else if (Integer.valueOf(options[3]) > (Integer.valueOf(Venues.get(match).getCapacityInput()))){
+    if (Integer.valueOf(options[3]) < (Integer.valueOf(Venues.get(match).getCapacityInput())) / 4) {
+      String newAttendees =
+          String.valueOf((Integer.valueOf(Venues.get(match).getCapacityInput())) / 4);
+      MessageCli.BOOKING_ATTENDEES_ADJUSTED.printMessage(
+          options[3], newAttendees, Venues.get(match).getCapacityInput());
+      options[3] = newAttendees;
+    } else if (Integer.valueOf(options[3])
+        > (Integer.valueOf(Venues.get(match).getCapacityInput()))) {
       String newAttendees = String.valueOf(Integer.valueOf(Venues.get(match).getCapacityInput()));
-      MessageCli.BOOKING_ATTENDEES_ADJUSTED.printMessage(options[3], newAttendees, Venues.get(match).getCapacityInput());
+      MessageCli.BOOKING_ATTENDEES_ADJUSTED.printMessage(
+          options[3], newAttendees, Venues.get(match).getCapacityInput());
+      options[3] = newAttendees;
     }
-    
+
     // If no error comes up, a new Booking is created, and added to the list of Bookings.
+    String newBookingReference = BookingReferenceGenerator.generateBookingReference();
     BookingSystem Booking =
-        new BookingSystem(options[0], options[1], options[2], Integer.valueOf(options[3]));
+        new BookingSystem(
+            options[0], options[1], options[2], Integer.valueOf(options[3]), newBookingReference);
     Bookings.add(Booking);
     MessageCli.MAKE_BOOKING_SUCCESSFUL.printMessage(
-        BookingReferenceGenerator.generateBookingReference(), venueName, options[1], options[3]);
+        newBookingReference, venueName, options[1], options[3]);
   }
+
+  public String getNextAvailableDate(VenueHireSystem Venue){
+    //Getting day component of system date
+    String[] setDateParts = dateInput.split("/");
+    int setDay = Integer.valueOf(setDateParts[0]);
+    
+    //Finding all instances of venuecode's booking day
+    ArrayList<Integer> Matches = new ArrayList<Integer>();
+
+    for (int i = 0; i < Bookings.size(); i++) {
+      if (Venue.getVenueCode().equals(Bookings.get(i).getBookingVenueCode())) {
+        String[] bookingDateParts = Bookings.get(i).getBookingVenueCode().split("/");
+        Matches.add(Integer.valueOf(bookingDateParts[0]));
+      }
+    }
+    
+    // If theres no bookings, return set date
+    if (Matches.size() == 0){
+      return dateInput;
+    }
+
+    int tempDay = setDay;
+    boolean match = false;
+
+    for (int i = 0; i < 32; i++){
+      for (int day : Matches){
+        if (day == tempDay){
+          tempDay++;
+          match = true;
+        }
+      }
+    }
+
+    //If there was no match, there is an available booking today
+    if (!match){
+      return dateInput;
+    }
+
+    //If there was a match, tempDay is the new earliest booking date
+    return (tempDay + "/" + setDateParts[1] + setDateParts[2]);
+    
+      
+    // while (true) {
+    //   for (int iterDate: Matches) {
+    //     if (iterDate == tempDay) {
+    //       match = true;
+    //       break;
+    //     }
+        
+    //     if (match) {
+    //       tempDay += 1;
+    //       match = false;
+    //       continue;
+    //     }
+
+    //     return(tempDay + "/" + setDateParts[1]+"/"+setDateParts[2]);
+    //   }
+    // }    
+
+  }
+
 
   public void printBookings(String venueCode) {
     // TODO implement this method

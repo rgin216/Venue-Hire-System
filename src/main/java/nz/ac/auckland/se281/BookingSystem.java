@@ -5,12 +5,14 @@ public class BookingSystem {
   private String requestedDate;
   private String customerEmail;
   private int numAttendees;
+  private String bookingReference;
   
-  BookingSystem(String venueCode, String requestedDate, String customerEmail, int numAttendees){
+  BookingSystem(String venueCode, String requestedDate, String customerEmail, int numAttendees, String bookingReference){
     this.venueCode = venueCode;
     this.requestedDate = requestedDate;
     this.customerEmail = customerEmail;
     this.numAttendees = numAttendees;
+    this.bookingReference = bookingReference;
   }
   public String getBookingVenueCode(){
     return venueCode;
