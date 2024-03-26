@@ -469,6 +469,23 @@ public class MainTest {
       assertContains("Successfully created booking 'HUD14D8O'");
       assertDoesNotContain("Booking not made", true);
     }
+    @Test
+    public void T2_19_attempt_to_book_without_venues() throws Exception {
+      runCommands(
+          
+              
+              SET_DATE,
+              "26/02/2024", //
+              MAKE_BOOKING,
+              options("GGG", "27/03/2024", "client001@email.com", "230"), //
+              MAKE_BOOKING,
+              options("GGG", "28/05/2024", "client999@email.com", "215"), //
+              PRINT_BOOKINGS,
+              "GGG");
+
+      assertContains("Nothing to print: there is no venue with code 'GGG'.");
+      assertContains("Booking not made: there are no venues in the system. Create one first.");
+    }
   }
 
   @FixMethodOrder(MethodSorters.NAME_ASCENDING)
