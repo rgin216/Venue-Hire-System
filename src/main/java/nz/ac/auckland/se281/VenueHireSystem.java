@@ -240,14 +240,20 @@ public class VenueHireSystem {
 
     // If no error comes up, a new Booking is created, and added to the list of Bookings.
     String newBookingReference = BookingReferenceGenerator.generateBookingReference();
-        new BookingSystem(
-            options[0], options[1], options[2], Integer.valueOf(options[3]), newBookingReference);
+    BookingSystem Booking = new BookingSystem(
+        options[0], options[1], options[2], Integer.valueOf(options[3]), newBookingReference);
     Bookings.add(Booking);
     MessageCli.MAKE_BOOKING_SUCCESSFUL.printMessage(
         newBookingReference, venueName, options[1], options[3]);
   }
 
   public String getNextAvailableDate(VenueHireSystem Venue) {
+    //If date hasnt bean set, return an empty string TEMP
+    if (dateInput.isEmpty()) {
+      return "";
+    }
+
+
     // Getting day component of system date
     String[] setDateParts = dateInput.split("/");
     int setDay = Integer.valueOf(setDateParts[0]);
@@ -294,14 +300,14 @@ public class VenueHireSystem {
     // Getting the name of the venue
     boolean match = false;
     int matchVenue;
+    String venueName = "";
     for (int i = 0; i < Venues.size(); i++) {
       if (Venues.get(i).getVenueCode().equals(venueCode)) {
-        String venueName = Venues.get(i).getVenueName();
+        venueName = Venues.get(i).getVenueName();
         match = true;
         matchVenue = i;
       }
     }
-
     // If no match, print no code exists and return
     if (!match) {
       MessageCli.PRINT_BOOKINGS_VENUE_NOT_FOUND.printMessage(venueCode);
@@ -309,11 +315,12 @@ public class VenueHireSystem {
     }
 
     ArrayList<Integer> MatchIndex = new ArrayList<Integer>();
-    for (int i = 0; i < Bookings.size(); i++) {
-      if (venueCode.equals(Bookings.get(i).getBookingVenueCode())) {
+    for (int i = 0; i < Bookings.size(); i++){
+      if (venueCode.equals(Bookings.get(i).getBookingVenueCode())){
         MatchIndex.add(i);
       }
     }
+    
     // If there is no matches, there are no bookings for that code
     if (MatchIndex.size() == 0) {
       MessageCli.PRINT_BOOKINGS_HEADER.printMessage(venueName);
@@ -323,7 +330,9 @@ public class VenueHireSystem {
 
     MessageCli.PRINT_BOOKINGS_HEADER.printMessage(venueName);
     for (int i = 0; i < MatchIndex.size(); i++) {
-      MessageCli.PRINT_BOOKINGS_ENTRY.printMessage(Bookings.get(MatchIndex.get(i)).getBookingReference(), Bookings.get(MatchIndex.get(i)).getRequestedDate());
+      MessageCli.PRINT_BOOKINGS_ENTRY.printMessage(
+          Bookings.get(MatchIndex.get(i)).getBookingReference(),
+          Bookings.get(MatchIndex.get(i)).getRequestedDate());
     }
   }
 
