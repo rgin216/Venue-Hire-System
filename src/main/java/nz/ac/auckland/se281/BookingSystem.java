@@ -11,9 +11,7 @@ public class BookingSystem {
   // private int numAttendees;
   private ArrayList<CateringType> caterings = new ArrayList<CateringType>();
 
-
-  
-  BookingSystem(String venueCode, String reqDate, String customerEmail, int numAttendees, String bookingRef){
+  BookingSystem(String venueCode, String reqDate, String customerEmail, int numAttendees, String bookingRef) {
     this.venueCode = venueCode;
     this.requestedDate = reqDate;
     // this.customerEmail = customerEmail;
@@ -21,22 +19,20 @@ public class BookingSystem {
     bookingReference = bookingRef;
   }
 
-  public String getBookingVenueCode(){
+  public String getBookingVenueCode() {
     return venueCode;
   }
 
-  public String getRequestedDate(){
+  public String getRequestedDate() {
     return requestedDate;
   }
 
-
-  public String getBookingReference(){
+  public String getBookingReference() {
     return bookingReference;
   }
 
-  public void setCateringType(CateringType cateringType){
+  public void setCateringType(CateringType cateringType) {
     caterings.add(cateringType);
 
   }
 }
-

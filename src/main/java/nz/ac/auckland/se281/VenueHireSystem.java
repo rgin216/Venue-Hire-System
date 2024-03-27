@@ -15,7 +15,8 @@ public class VenueHireSystem {
   private String capacityInput;
   private String hireFeeInput;
 
-  VenueHireSystem() {}
+  VenueHireSystem() {
+  }
 
   VenueHireSystem(String venueName, String venueCode, String capacityInput, String hireFeeInput) {
     this.venueName = venueName;
@@ -25,28 +26,28 @@ public class VenueHireSystem {
   }
 
   public String getVenueName() {
-    //returns the name of the venue
+    // returns the name of the venue
     return this.venueName;
   }
 
   public String getVenueCode() {
-    //returns the code of the venue
+    // returns the code of the venue
     return this.venueCode;
   }
 
   public String getCapacityInput() {
-    //returns the capacity of the venue
+    // returns the capacity of the venue
     return this.capacityInput;
   }
 
   public String getHireFeeInput() {
-    //returns the hire fee of the venue
+    // returns the hire fee of the venue
     return this.hireFeeInput;
   }
 
   public void printVenues() {
     // array of strings of the words of each number from 2-9
-    String[] numbers = {"two", "three", "four", "five", "six", "seven", "eight", "nine"};
+    String[] numbers = { "two", "three", "four", "five", "six", "seven", "eight", "nine" };
 
     // When theres only one venue
     if (venues.isEmpty()) {
@@ -54,11 +55,11 @@ public class VenueHireSystem {
     } else if (venues.size() == 1) {
       MessageCli.NUMBER_VENUES.printMessage("is", "one", getNextAvailableDate(venues.get(0)));
       MessageCli.VENUE_ENTRY.printMessage(
-      venues.get(0).getVenueName(),
-      venues.get(0).getVenueCode(),
-      venues.get(0).getCapacityInput(),
-      venues.get(0).getHireFeeInput(),
-      "");
+          venues.get(0).getVenueName(),
+          venues.get(0).getVenueCode(),
+          venues.get(0).getCapacityInput(),
+          venues.get(0).getHireFeeInput(),
+          "");
     }
 
     // When theres 2-9 venues
@@ -229,20 +230,19 @@ public class VenueHireSystem {
 
     // Altering numAttendees to 25% or 100% of the venue's capacity.
     if (Integer.valueOf(options[3]) < (Integer.valueOf(venues.get(match).getCapacityInput())) / 4) {
-      String newAttendees =
-          String.valueOf((Integer.valueOf(venues.get(match).getCapacityInput())) / 4);
+      String newAttendees = String.valueOf((Integer.valueOf(venues.get(match).getCapacityInput())) / 4);
       MessageCli.BOOKING_ATTENDEES_ADJUSTED.printMessage(
           options[3], newAttendees, venues.get(match).getCapacityInput());
       options[3] = newAttendees;
-    } else if (Integer.valueOf(options[3])
-        > (Integer.valueOf(venues.get(match).getCapacityInput()))) {
+    } else if (Integer.valueOf(options[3]) > (Integer.valueOf(venues.get(match).getCapacityInput()))) {
       String newAttendees = String.valueOf(Integer.valueOf(venues.get(match).getCapacityInput()));
       MessageCli.BOOKING_ATTENDEES_ADJUSTED.printMessage(
           options[3], newAttendees, venues.get(match).getCapacityInput());
       options[3] = newAttendees;
     }
 
-    // If no error comes up, a new Booking is created, and added to the list of Bookings.
+    // If no error comes up, a new Booking is created, and added to the list of
+    // Bookings.
     String newBookingReference = BookingReferenceGenerator.generateBookingReference();
     BookingSystem booking = new BookingSystem(
         options[0], options[1], options[2], Integer.valueOf(options[3]), newBookingReference);
@@ -251,12 +251,11 @@ public class VenueHireSystem {
         newBookingReference, venueName, options[1], options[3]);
   }
 
-  public String getNextAvailableDate(VenueHireSystem Venue) {
-    //If date hasnt bean set, return an empty string TEMP
+  public String getNextAvailableDate(VenueHireSystem venue) {
+    // If date hasnt bean set, return an empty string TEMP
     if (dateInput.isEmpty()) {
       return "";
     }
-
 
     // Getting day component of system date
     String[] setDateParts = dateInput.split("/");
@@ -265,7 +264,7 @@ public class VenueHireSystem {
     // Finding all instances of venuecode's booking day
     ArrayList<Integer> matches = new ArrayList<Integer>();
     for (int i = 0; i < bookings.size(); i++) {
-      if (Venue.getVenueCode().equals(bookings.get(i).getBookingVenueCode())) {
+      if (venue.getVenueCode().equals(bookings.get(i).getBookingVenueCode())) {
         bookingDateParts = bookings.get(i).getRequestedDate().split("/");
         matches.add(Integer.valueOf(bookingDateParts[0]));
       }
@@ -319,12 +318,12 @@ public class VenueHireSystem {
     }
 
     ArrayList<Integer> matchIndex = new ArrayList<Integer>();
-    for (int i = 0; i < bookings.size(); i++){
-      if (venueCode.equals(bookings.get(i).getBookingVenueCode())){
+    for (int i = 0; i < bookings.size(); i++) {
+      if (venueCode.equals(bookings.get(i).getBookingVenueCode())) {
         matchIndex.add(i);
       }
     }
-    
+
     // If there is no matches, there are no bookings for that code
     if (matchIndex.size() == 0) {
       MessageCli.PRINT_BOOKINGS_HEADER.printMessage(venueName);
@@ -340,44 +339,45 @@ public class VenueHireSystem {
     }
   }
 
-  public int bookingExists(String bookingReference){
-    //Checks if the booking exists, returns the index of the booking if it does, -1 if it doesn't
+  public int bookingExists(String bookingReference) {
+    // Checks if the booking exists, returns the index of the booking if it does, -1
+    // if it doesn't
     int matchIndex = -1;
-    for (int i = 0; i < bookings.size(); i++){
-      if (bookingReference.equals(bookings.get(i).getBookingReference())){
+    for (int i = 0; i < bookings.size(); i++) {
+      if (bookingReference.equals(bookings.get(i).getBookingReference())) {
         matchIndex = i;
       }
     }
-    if (matchIndex == -1){
+    if (matchIndex == -1) {
       MessageCli.SERVICE_NOT_ADDED_BOOKING_NOT_FOUND.printMessage("Catering", bookingReference);
     }
     return matchIndex;
   }
 
   public void addCateringService(String bookingReference, CateringType cateringType) {
-    //Check if the bookingReference exists:
+    // Check if the bookingReference exists:
     int matchIndex = bookingExists(bookingReference);
-    if (matchIndex == -1){
+    if (matchIndex == -1) {
       return;
     }
-    //Add the catering to the list of catering in that booking
+    // Add the catering to the list of catering in that booking
     bookings.get(matchIndex).setCateringType(cateringType);
     MessageCli.ADD_SERVICE_SUCCESSFUL.printMessage("Catering", cateringType.toString());
   }
 
   public void addServiceMusic(String bookingReference) {
-    //Check if the bookingReference exists:
+    // Check if the bookingReference exists:
     int matchIndex = bookingExists(bookingReference);
-    if (matchIndex == -1){
+    if (matchIndex == -1) {
       return;
     }
     // TODO implement this method
   }
 
   public void addServiceFloral(String bookingReference, FloralType floralType) {
-    //Check if the bookingReference exists:
+    // Check if the bookingReference exists:
     int matchIndex = bookingExists(bookingReference);
-    if (matchIndex == -1){
+    if (matchIndex == -1) {
       return;
     }
     // TODO implement this method
