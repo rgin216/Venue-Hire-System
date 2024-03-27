@@ -11,8 +11,8 @@ public class BookingSystem {
   // private int numAttendees;
   private ArrayList<CateringType> caterings = new ArrayList<CateringType>();
 
-  BookingSystem(String venueCode, String reqDate, String customerEmail, int numAttendees, String bookingRef) {
-    this.venueCode = venueCode;
+  BookingSystem(String vCode, String reqDate, String cEmail, int numPpl, String bookingRef) {
+    this.venueCode = vCode;
     this.requestedDate = reqDate;
     // this.customerEmail = customerEmail;
     // this.numAttendees = numAttendees;
