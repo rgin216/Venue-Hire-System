@@ -14,8 +14,8 @@ import org.junit.runners.Suite.SuiteClasses;
 @RunWith(Suite.class)
 @SuiteClasses({
   MainTest.Task1.class,
-  //MainTest.Task2.class,
-  // MainTest.Task3.class,
+  MainTest.Task2.class,
+  MainTest.Task3.class,
   // MainTest.YourTests.class, // Uncomment this line to run your own tests
 })
 public class MainTest {
@@ -137,8 +137,7 @@ public class MainTest {
       public YourTests() {
         super(Main.class);
       }
-    }
-    @Test
+      @Test
     public void T1_09_nine_venues_saved() throws Exception {
       runCommands(unpack(CREATE_NINE_VENUES, PRINT_VENUES));
 
@@ -167,6 +166,8 @@ public class MainTest {
       assertDoesNotContain("There is", true);
       assertDoesNotContain("ten venues", true);
     }
+    }
+    
   }
 
   @FixMethodOrder(MethodSorters.NAME_ASCENDING)
@@ -431,8 +432,12 @@ public class MainTest {
       assertDoesNotContain("for 'LLH'", true);
       assertDoesNotContain("'HUD14D8O' on 27/03/2024", true);
       assertDoesNotContain("'ZP4HRCZ4' on 28/05/2024", true);
-    }
-    @Test
+    } 
+    public static class YourTests extends CliTest {
+      public YourTests() {
+        super(Main.class);
+      }
+      @Test
     public void T2_16_make_booking_with_code_that_doesnt_exist() throws Exception {
       runCommands(unpack(CREATE_TEN_VENUES,
         
@@ -487,6 +492,8 @@ public class MainTest {
       assertContains("Booking not made: there are no venues in the system. Create one first.");
     }
   }
+  }
+  
 
   @FixMethodOrder(MethodSorters.NAME_ASCENDING)
   public static class Task3 extends CliTest {
@@ -796,6 +803,8 @@ public class MainTest {
       runCommands(PRINT_VENUES);
       assertContains("There are no venues in the system. Please create a venue first.");
     }
+    
+    
   }
 
   private static final Object[] CREATE_NINE_VENUES =

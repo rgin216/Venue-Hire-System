@@ -25,18 +25,22 @@ public class VenueHireSystem {
   }
 
   public String getVenueName() {
+    //returns the name of the venue
     return this.venueName;
   }
 
   public String getVenueCode() {
+    //returns the code of the venue
     return this.venueCode;
   }
 
   public String getCapacityInput() {
+    //returns the capacity of the venue
     return this.capacityInput;
   }
 
   public String getHireFeeInput() {
+    //returns the hire fee of the venue
     return this.hireFeeInput;
   }
 
@@ -336,15 +340,45 @@ public class VenueHireSystem {
     }
   }
 
+  public int bookingExists(String bookingReference){
+    int matchIndex = -1;
+    for (int i = 0; i < Bookings.size(); i++){
+      if (bookingReference.equals(Bookings.get(i).getBookingReference())){
+        matchIndex = i;
+      }
+    }
+    if (matchIndex == -1){
+      MessageCli.SERVICE_NOT_ADDED_BOOKING_NOT_FOUND.printMessage("Catering", bookingReference);
+    }
+    return matchIndex;
+  }
+
   public void addCateringService(String bookingReference, CateringType cateringType) {
-    // TODO implement this method
+    //Check if the bookingReference exists:
+    int matchIndex = bookingExists(bookingReference);
+    if (matchIndex == -1){
+      return;
+    }
+    //Add the catering to the list of catering in that booking
+    Bookings.get(matchIndex).setCateringType(cateringType);
+    MessageCli.ADD_SERVICE_SUCCESSFUL.printMessage("Catering", cateringType.toString());
   }
 
   public void addServiceMusic(String bookingReference) {
+    //Check if the bookingReference exists:
+    int matchIndex = bookingExists(bookingReference);
+    if (matchIndex == -1){
+      return;
+    }
     // TODO implement this method
   }
 
   public void addServiceFloral(String bookingReference, FloralType floralType) {
+    //Check if the bookingReference exists:
+    int matchIndex = bookingExists(bookingReference);
+    if (matchIndex == -1){
+      return;
+    }
     // TODO implement this method
   }
 
