@@ -348,9 +348,6 @@ public class VenueHireSystem {
         matchIndex = i;
       }
     }
-    if (matchIndex == -1) {
-      MessageCli.SERVICE_NOT_ADDED_BOOKING_NOT_FOUND.printMessage("Catering", bookingReference);
-    }
     return matchIndex;
   }
 
@@ -358,6 +355,7 @@ public class VenueHireSystem {
     // Check if the bookingReference exists:
     int matchIndex = bookingExists(bookingReference);
     if (matchIndex == -1) {
+      MessageCli.SERVICE_NOT_ADDED_BOOKING_NOT_FOUND.printMessage("Catering", bookingReference);
       return;
     }
     // Add the catering to the list of catering in that booking
@@ -369,18 +367,22 @@ public class VenueHireSystem {
     // Check if the bookingReference exists:
     int matchIndex = bookingExists(bookingReference);
     if (matchIndex == -1) {
+      MessageCli.SERVICE_NOT_ADDED_BOOKING_NOT_FOUND.printMessage("Music", bookingReference);
       return;
     }
-    // TODO implement this method
+    bookings.get(matchIndex).setMusic();
+    MessageCli.ADD_SERVICE_SUCCESSFUL.printMessage("Music", bookingReference);
   }
 
   public void addServiceFloral(String bookingReference, FloralType floralType) {
     // Check if the bookingReference exists:
     int matchIndex = bookingExists(bookingReference);
     if (matchIndex == -1) {
+      MessageCli.SERVICE_NOT_ADDED_BOOKING_NOT_FOUND.printMessage("Floral", bookingReference);
       return;
     }
-    // TODO implement this method
+    bookings.get(matchIndex).setFloralType(floralType);
+    MessageCli.ADD_SERVICE_SUCCESSFUL.printMessage("Floral (" + floralType.getName() + ")", bookingReference);
   }
 
   public void viewInvoice(String bookingReference) {
