@@ -362,7 +362,7 @@ public class VenueHireSystem {
     }
     // Add the catering to the list of catering in that booking
     bookings.get(matchIndex).setCateringType(cateringType);
-    MessageCli.ADD_SERVICE_SUCCESSFUL.printMessage("Catering", cateringType.toString());
+    MessageCli.ADD_SERVICE_SUCCESSFUL.printMessage("Catering (" + cateringType.getName() + ")", bookingReference);
   }
 
   public void addServiceMusic(String bookingReference) {

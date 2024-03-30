@@ -33,6 +33,6 @@ public class BookingSystem {
 
   public void setCateringType(CateringType cateringType) {
     caterings.add(cateringType);
-
   }
+
 }

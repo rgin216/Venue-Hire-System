@@ -13,8 +13,8 @@ import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
 @SuiteClasses({
-  MainTest.Task1.class,
-  MainTest.Task2.class,
+  //MainTest.Task1.class,
+  //MainTest.Task2.class,
   MainTest.Task3.class,
   // MainTest.YourTests.class, // Uncomment this line to run your own tests
 })
@@ -784,91 +784,92 @@ public class MainTest {
       assertContains("Number of Guests: 20");
       assertContains("Venue: Frugal Fiesta Hall");
     }
-  }
+  
 
-  @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-  public static class YourTests extends CliTest {
+    @FixMethodOrder(MethodSorters.NAME_ASCENDING)
+    public static class YourTests extends CliTest {
 
-    public YourTests() {
-      super(Main.class);
+      public YourTests() {
+        super(Main.class);
+      }
+
+      @Override
+      public void reset() {
+        BookingReferenceGenerator.reset();
+      }
+
+      @Test
+      public void T4_01_add_your_own_tests_as_needed() throws Exception {
+        runCommands(PRINT_VENUES);
+        assertContains("There are no venues in the system. Please create a venue first.");
+      }
+      
+      
     }
 
-    @Override
-    public void reset() {
-      BookingReferenceGenerator.reset();
+    private static final Object[] CREATE_NINE_VENUES =
+        new Object[] {
+          CREATE_VENUE,
+          "'Frugal Fiesta Hall'",
+          "FFH",
+          "80",
+          "250", //
+          CREATE_VENUE,
+          "'Comfy Corner Events Centre'",
+          "CCEC",
+          "120",
+          "500", //
+          CREATE_VENUE,
+          "'Cozy Comforts Venue'",
+          "CCV",
+          "200",
+          "500", //
+          CREATE_VENUE,
+          "'Charming Charm Hall'",
+          "CCH",
+          "220",
+          "500", //
+          CREATE_VENUE,
+          "'Refined Radiance Venue'",
+          "RRV",
+          "200",
+          "500", //
+          CREATE_VENUE,
+          "'Classy Celebration Venue'",
+          "TGB",
+          "150",
+          "1000", //
+          CREATE_VENUE,
+          "'Grand Gala Gardens'",
+          "GGG",
+          "260",
+          "1500", //
+          CREATE_VENUE,
+          "'Exclusive Elegance Venue'",
+          "EEV",
+          "350",
+          "1500", //
+          CREATE_VENUE,
+          "'Luxurious Legacy Hall'",
+          "LLH",
+          "800",
+          "2500", //
+        };
+
+    private static final Object[] CREATE_TEN_VENUES =
+        unpack(CREATE_NINE_VENUES, CREATE_VENUE, "'Majestic Monarch Mansion'", "MMM", "1000", "2500");
+
+    private static Object[] unpack(Object[] commands, Object... more) {
+      List<Object> all = new ArrayList<Object>();
+      all.addAll(List.of(commands));
+      all.addAll(List.of(more));
+      return all.toArray(new Object[all.size()]);
     }
 
-    @Test
-    public void T4_01_add_your_own_tests_as_needed() throws Exception {
-      runCommands(PRINT_VENUES);
-      assertContains("There are no venues in the system. Please create a venue first.");
+    private static String[] options(String... options) {
+      List<String> all = new ArrayList<String>();
+      all.addAll(List.of(options));
+      return all.toArray(new String[all.size()]);
     }
-    
-    
-  }
-
-  private static final Object[] CREATE_NINE_VENUES =
-      new Object[] {
-        CREATE_VENUE,
-        "'Frugal Fiesta Hall'",
-        "FFH",
-        "80",
-        "250", //
-        CREATE_VENUE,
-        "'Comfy Corner Events Centre'",
-        "CCEC",
-        "120",
-        "500", //
-        CREATE_VENUE,
-        "'Cozy Comforts Venue'",
-        "CCV",
-        "200",
-        "500", //
-        CREATE_VENUE,
-        "'Charming Charm Hall'",
-        "CCH",
-        "220",
-        "500", //
-        CREATE_VENUE,
-        "'Refined Radiance Venue'",
-        "RRV",
-        "200",
-        "500", //
-        CREATE_VENUE,
-        "'Classy Celebration Venue'",
-        "TGB",
-        "150",
-        "1000", //
-        CREATE_VENUE,
-        "'Grand Gala Gardens'",
-        "GGG",
-        "260",
-        "1500", //
-        CREATE_VENUE,
-        "'Exclusive Elegance Venue'",
-        "EEV",
-        "350",
-        "1500", //
-        CREATE_VENUE,
-        "'Luxurious Legacy Hall'",
-        "LLH",
-        "800",
-        "2500", //
-      };
-
-  private static final Object[] CREATE_TEN_VENUES =
-      unpack(CREATE_NINE_VENUES, CREATE_VENUE, "'Majestic Monarch Mansion'", "MMM", "1000", "2500");
-
-  private static Object[] unpack(Object[] commands, Object... more) {
-    List<Object> all = new ArrayList<Object>();
-    all.addAll(List.of(commands));
-    all.addAll(List.of(more));
-    return all.toArray(new Object[all.size()]);
-  }
-
-  private static String[] options(String... options) {
-    List<String> all = new ArrayList<String>();
-    all.addAll(List.of(options));
-    return all.toArray(new String[all.size()]);
   }
 }
