@@ -27,6 +27,11 @@ public class Types {
     public String getName() {
       return this.name;
     }
+
+    int getCost() {
+      // TODO Auto-generated method stub
+      throw new UnsupportedOperationException("Unimplemented method 'getCost'");
+    }
   }
 
   public enum FloralType {

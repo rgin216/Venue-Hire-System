@@ -355,35 +355,40 @@ public class VenueHireSystem {
     // Check if the bookingReference exists:
     int matchIndex = bookingExists(bookingReference);
     if (matchIndex == -1) {
-      MessageCli.SERVICE_NOT_ADDED_BOOKING_NOT_FOUND.printMessage("Catering", bookingReference);
-      return;
+        MessageCli.SERVICE_NOT_ADDED_BOOKING_NOT_FOUND.printMessage("Catering", bookingReference);
+        return;
     }
-    // Add the catering to the list of catering in that booking
-    bookings.get(matchIndex).setCateringType(cateringType);
+    // Create a new Catering service and add it to the booking
+    Catering catering = new Catering(bookingReference, cateringType);
+    bookings.get(matchIndex).addService(catering);
     MessageCli.ADD_SERVICE_SUCCESSFUL.printMessage("Catering (" + cateringType.getName() + ")", bookingReference);
-  }
+}
 
-  public void addServiceMusic(String bookingReference) {
+public void addServiceMusic(String bookingReference) {
     // Check if the bookingReference exists:
     int matchIndex = bookingExists(bookingReference);
     if (matchIndex == -1) {
-      MessageCli.SERVICE_NOT_ADDED_BOOKING_NOT_FOUND.printMessage("Music", bookingReference);
-      return;
+        MessageCli.SERVICE_NOT_ADDED_BOOKING_NOT_FOUND.printMessage("Music", bookingReference);
+        return;
     }
-    bookings.get(matchIndex).setMusic();
+    // Create a new Music service and add it to the booking
+    Music music = new Music(bookingReference);
+    bookings.get(matchIndex).addService(music);
     MessageCli.ADD_SERVICE_SUCCESSFUL.printMessage("Music", bookingReference);
-  }
+}
 
-  public void addServiceFloral(String bookingReference, FloralType floralType) {
+public void addServiceFloral(String bookingReference, FloralType floralType) {
     // Check if the bookingReference exists:
     int matchIndex = bookingExists(bookingReference);
     if (matchIndex == -1) {
-      MessageCli.SERVICE_NOT_ADDED_BOOKING_NOT_FOUND.printMessage("Floral", bookingReference);
-      return;
+        MessageCli.SERVICE_NOT_ADDED_BOOKING_NOT_FOUND.printMessage("Floral", bookingReference);
+        return;
     }
-    bookings.get(matchIndex).setFloralType(floralType);
+    // Create a new Floral service and add it to the booking
+    Floral floral = new Floral(bookingReference, floralType);
+    bookings.get(matchIndex).addService(floral);
     MessageCli.ADD_SERVICE_SUCCESSFUL.printMessage("Floral (" + floralType.getName() + ")", bookingReference);
-  }
+}
 
   public void viewInvoice(String bookingReference) {
     // TODO implement this method

@@ -34,15 +34,18 @@ public class BookingSystem {
     return bookingReference;
   }
 
-  public void setCateringType(CateringType cateringType) {
-    caterings.add(cateringType);
-  }
-  public void setFloralType(FloralType floralType) {
-    florals.add(floralType);
+   public void addService(Catering catering) {
+    catering.addService();
   }
 
-  public void setMusic() {
-    music = true;
+  public void addService(Floral floral) {
+    floral.addService();
   }
+
+  public void addService(Music music) {
+    music.addService();
+  }
+
+  
 
 }
