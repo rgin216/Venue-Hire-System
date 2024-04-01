@@ -143,6 +143,10 @@ public class VenueHireSystem {
     dateSet = true;
   }
 
+  public String getSystemDate() {
+    return dateInput;
+  }
+
   public void printSystemDate() {
     if (dateInput.isEmpty()) {
       System.out.println("Current system date is not set.");
@@ -245,7 +249,7 @@ public class VenueHireSystem {
     // Bookings.
     String newBookingReference = BookingReferenceGenerator.generateBookingReference();
     BookingSystem booking = new BookingSystem(
-        options[0], options[1], options[2], Integer.valueOf(options[3]), newBookingReference);
+        options[0], options[1], options[2], Integer.valueOf(options[3]), newBookingReference, getSystemDate(), venueName);
     bookings.add(booking);
     MessageCli.MAKE_BOOKING_SUCCESSFUL.printMessage(
         newBookingReference, venueName, options[1], options[3]);
@@ -302,13 +306,11 @@ public class VenueHireSystem {
   public void printBookings(String venueCode) {
     // Getting the name of the venue
     boolean match = false;
-    int matchVenue;
     String venueName = "";
     for (int i = 0; i < venues.size(); i++) {
       if (venues.get(i).getVenueCode().equals(venueCode)) {
         venueName = venues.get(i).getVenueName();
         match = true;
-        matchVenue = i;
       }
     }
     // If no match, print no code exists and return
@@ -391,6 +393,13 @@ public void addServiceFloral(String bookingReference, FloralType floralType) {
 }
 
   public void viewInvoice(String bookingReference) {
-    // TODO implement this method
+    // Check if the bookingReference exists:
+    int matchIndex = bookingExists(bookingReference);
+    if (matchIndex == -1) {
+        MessageCli.VIEW_INVOICE_BOOKING_NOT_FOUND.printMessage(bookingReference);
+        return;
+    }
+    // Print the invoice
+    bookings.get(matchIndex).printInvoice();
   }
 }

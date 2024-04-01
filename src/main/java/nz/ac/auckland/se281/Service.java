@@ -7,11 +7,6 @@ public abstract class Service {
       this.bookingReference = bookingReference;
   }
 
-  public int getNumAttendees() {
-      for (int i = 0; i < bookings.size; i++) {
-          System.out.println("Hello");
-      }
-  }
 
   public abstract void addService();
 }
