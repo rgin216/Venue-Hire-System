@@ -3,7 +3,7 @@ package nz.ac.auckland.se281;
 /** You cannot modify this class! */
 public class Types {
 
-  public enum  CateringType {
+  public enum CateringType {
     BREAKFAST(15, "Breakfast"),
     LUNCH(20, "Lunch"),
     DINNER(30, "Dinner"),

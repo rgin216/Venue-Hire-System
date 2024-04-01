@@ -13,10 +13,9 @@ import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
 @SuiteClasses({
-  //MainTest.Task1.class,
-  //MainTest.Task2.class,
-  MainTest.Task3.class,
-  // MainTest.YourTests.class, // Uncomment this line to run your own tests
+    MainTest.Task1.class,
+    MainTest.Task2.class,
+    MainTest.Task3.class,
 })
 public class MainTest {
 
@@ -137,37 +136,37 @@ public class MainTest {
       public YourTests() {
         super(Main.class);
       }
+
       @Test
-    public void T1_09_nine_venues_saved() throws Exception {
-      runCommands(unpack(CREATE_NINE_VENUES, PRINT_VENUES));
+      public void T1_09_nine_venues_saved() throws Exception {
+        runCommands(unpack(CREATE_NINE_VENUES, PRINT_VENUES));
 
-      assertContains("Successfully created venue 'Frugal Fiesta Hall' (FFH).");
-      assertContains("Successfully created venue 'Comfy Corner Events Centre' (CCEC).");
-      assertContains("Successfully created venue 'Cozy Comforts Venue' (CCV).");
-      assertContains("Successfully created venue 'Charming Charm Hall' (CCH).");
-      assertContains("Successfully created venue 'Refined Radiance Venue' (RRV).");
-      assertContains("Successfully created venue 'Classy Celebration Venue' (TGB).");
-      assertContains("Successfully created venue 'Grand Gala Gardens' (GGG).");
-      assertContains("Successfully created venue 'Exclusive Elegance Venue' (EEV).");
-      assertContains("Successfully created venue 'Luxurious Legacy Hall' (LLH).");
+        assertContains("Successfully created venue 'Frugal Fiesta Hall' (FFH).");
+        assertContains("Successfully created venue 'Comfy Corner Events Centre' (CCEC).");
+        assertContains("Successfully created venue 'Cozy Comforts Venue' (CCV).");
+        assertContains("Successfully created venue 'Charming Charm Hall' (CCH).");
+        assertContains("Successfully created venue 'Refined Radiance Venue' (RRV).");
+        assertContains("Successfully created venue 'Classy Celebration Venue' (TGB).");
+        assertContains("Successfully created venue 'Grand Gala Gardens' (GGG).");
+        assertContains("Successfully created venue 'Exclusive Elegance Venue' (EEV).");
+        assertContains("Successfully created venue 'Luxurious Legacy Hall' (LLH).");
 
-      assertContains("There are nine venues in the system:");
-      assertContains("Frugal Fiesta Hall (FFH) - 80 people - $250 base hire fee");
-      assertContains("Comfy Corner Events Centre (CCEC) - 120 people - $500 base hire fee");
-      assertContains("Cozy Comforts Venue (CCV) - 200 people - $500 base hire fee");
-      assertContains("Charming Charm Hall (CCH) - 220 people - $500 base hire fee");
-      assertContains("Refined Radiance Venue (RRV) - 200 people - $500 base hire fee");
-      assertContains("Classy Celebration Venue (TGB) - 150 people - $1000 base hire fee");
-      assertContains("Grand Gala Gardens (GGG) - 260 people - $1500 base hire fee");
-      assertContains("Exclusive Elegance Venue (EEV) - 350 people - $1500 base hire fee");
-      assertContains("Luxurious Legacy Hall (LLH) - 800 people - $2500 base hire fee");
+        assertContains("There are nine venues in the system:");
+        assertContains("Frugal Fiesta Hall (FFH) - 80 people - $250 base hire fee");
+        assertContains("Comfy Corner Events Centre (CCEC) - 120 people - $500 base hire fee");
+        assertContains("Cozy Comforts Venue (CCV) - 200 people - $500 base hire fee");
+        assertContains("Charming Charm Hall (CCH) - 220 people - $500 base hire fee");
+        assertContains("Refined Radiance Venue (RRV) - 200 people - $500 base hire fee");
+        assertContains("Classy Celebration Venue (TGB) - 150 people - $1000 base hire fee");
+        assertContains("Grand Gala Gardens (GGG) - 260 people - $1500 base hire fee");
+        assertContains("Exclusive Elegance Venue (EEV) - 350 people - $1500 base hire fee");
+        assertContains("Luxurious Legacy Hall (LLH) - 800 people - $2500 base hire fee");
 
-
-      assertDoesNotContain("There is", true);
-      assertDoesNotContain("ten venues", true);
+        assertDoesNotContain("There is", true);
+        assertDoesNotContain("ten venues", true);
+      }
     }
-    }
-    
+
   }
 
   @FixMethodOrder(MethodSorters.NAME_ASCENDING)
@@ -432,68 +431,71 @@ public class MainTest {
       assertDoesNotContain("for 'LLH'", true);
       assertDoesNotContain("'HUD14D8O' on 27/03/2024", true);
       assertDoesNotContain("'ZP4HRCZ4' on 28/05/2024", true);
-    } 
+    }
+
     public static class YourTests extends CliTest {
       public YourTests() {
         super(Main.class);
       }
-      @Test
-    public void T2_16_make_booking_with_code_that_doesnt_exist() throws Exception {
-      runCommands(unpack(CREATE_TEN_VENUES,
-        
-          SET_DATE,
-          "26/02/2024", //
-          MAKE_BOOKING,
-          options("ZZZ", "27/02/2024", "client001@email.com", "70")));
 
-      assertContains("Booking not made: there is no venue with code 'ZZZ'.");
-      assertDoesNotContain("Successfully created booking", true);
-    }
-    @Test
-    public void T2_17_ensure_booking_date_isnt_inPast() throws Exception {
-      runCommands(unpack(CREATE_TEN_VENUES,
-        SET_DATE,
-        "26/02/2024",
-        MAKE_BOOKING,
-        options("FFH", "27/02/1999", "client001@email.com", "70")));
+      @Test
+      public void T2_16_make_booking_with_code_that_doesnt_exist() throws Exception {
+        runCommands(unpack(CREATE_TEN_VENUES,
+
+            SET_DATE,
+            "26/02/2024", //
+            MAKE_BOOKING,
+            options("ZZZ", "27/02/2024", "client001@email.com", "70")));
+
+        assertContains("Booking not made: there is no venue with code 'ZZZ'.");
+        assertDoesNotContain("Successfully created booking", true);
+      }
+
+      @Test
+      public void T2_17_ensure_booking_date_isnt_inPast() throws Exception {
+        runCommands(unpack(CREATE_TEN_VENUES,
+            SET_DATE,
+            "26/02/2024",
+            MAKE_BOOKING,
+            options("FFH", "27/02/1999", "client001@email.com", "70")));
 
         assertContains(
-          "Booking not made: '27/02/1999' is in the past (system date is 26/02/2024).");
-    }
-    @Test
-    public void T2_18_make_booking_too_MANY_attendees() throws Exception {
-      runCommands(
-          unpack(
-              CREATE_TEN_VENUES,
-              SET_DATE,
-              "26/02/2024", //
-              MAKE_BOOKING,
-              options("GGG", "28/05/2024", "client999@email.com", "270")));
+            "Booking not made: '27/02/1999' is in the past (system date is 26/02/2024).");
+      }
 
-      assertContains("Number of attendees adjusted from 270 to 260, as the venue capacity is 260.");
-      assertContains("Successfully created booking 'HUD14D8O'");
-      assertDoesNotContain("Booking not made", true);
-    }
-    @Test
-    public void T2_19_attempt_to_book_without_venues() throws Exception {
-      runCommands(
-          
-              
-              SET_DATE,
-              "26/02/2024", //
-              MAKE_BOOKING,
-              options("GGG", "27/03/2024", "client001@email.com", "230"), //
-              MAKE_BOOKING,
-              options("GGG", "28/05/2024", "client999@email.com", "215"), //
-              PRINT_BOOKINGS,
-              "GGG");
+      @Test
+      public void T2_18_make_booking_too_MANY_attendees() throws Exception {
+        runCommands(
+            unpack(
+                CREATE_TEN_VENUES,
+                SET_DATE,
+                "26/02/2024", //
+                MAKE_BOOKING,
+                options("GGG", "28/05/2024", "client999@email.com", "270")));
 
-      assertContains("Nothing to print: there is no venue with code 'GGG'.");
-      assertContains("Booking not made: there are no venues in the system. Create one first.");
+        assertContains("Number of attendees adjusted from 270 to 260, as the venue capacity is 260.");
+        assertContains("Successfully created booking 'HUD14D8O'");
+        assertDoesNotContain("Booking not made", true);
+      }
+
+      @Test
+      public void T2_19_attempt_to_book_without_venues() throws Exception {
+        runCommands(
+
+            SET_DATE,
+            "26/02/2024", //
+            MAKE_BOOKING,
+            options("GGG", "27/03/2024", "client001@email.com", "230"), //
+            MAKE_BOOKING,
+            options("GGG", "28/05/2024", "client999@email.com", "215"), //
+            PRINT_BOOKINGS,
+            "GGG");
+
+        assertContains("Nothing to print: there is no venue with code 'GGG'.");
+        assertContains("Booking not made: there are no venues in the system. Create one first.");
+      }
     }
   }
-  }
-  
 
   @FixMethodOrder(MethodSorters.NAME_ASCENDING)
   public static class Task3 extends CliTest {
@@ -784,7 +786,6 @@ public class MainTest {
       assertContains("Number of Guests: 20");
       assertContains("Venue: Frugal Fiesta Hall");
     }
-  
 
     @FixMethodOrder(MethodSorters.NAME_ASCENDING)
     public static class YourTests extends CliTest {
@@ -803,73 +804,71 @@ public class MainTest {
         runCommands(PRINT_VENUES);
         assertContains("There are no venues in the system. Please create a venue first.");
       }
-      
-      
+
     }
+  }
 
-    private static final Object[] CREATE_NINE_VENUES =
-        new Object[] {
-          CREATE_VENUE,
-          "'Frugal Fiesta Hall'",
-          "FFH",
-          "80",
-          "250", //
-          CREATE_VENUE,
-          "'Comfy Corner Events Centre'",
-          "CCEC",
-          "120",
-          "500", //
-          CREATE_VENUE,
-          "'Cozy Comforts Venue'",
-          "CCV",
-          "200",
-          "500", //
-          CREATE_VENUE,
-          "'Charming Charm Hall'",
-          "CCH",
-          "220",
-          "500", //
-          CREATE_VENUE,
-          "'Refined Radiance Venue'",
-          "RRV",
-          "200",
-          "500", //
-          CREATE_VENUE,
-          "'Classy Celebration Venue'",
-          "TGB",
-          "150",
-          "1000", //
-          CREATE_VENUE,
-          "'Grand Gala Gardens'",
-          "GGG",
-          "260",
-          "1500", //
-          CREATE_VENUE,
-          "'Exclusive Elegance Venue'",
-          "EEV",
-          "350",
-          "1500", //
-          CREATE_VENUE,
-          "'Luxurious Legacy Hall'",
-          "LLH",
-          "800",
-          "2500", //
-        };
+  private static final Object[] CREATE_NINE_VENUES = new Object[] {
+      CREATE_VENUE,
+      "'Frugal Fiesta Hall'",
+      "FFH",
+      "80",
+      "250", //
+      CREATE_VENUE,
+      "'Comfy Corner Events Centre'",
+      "CCEC",
+      "120",
+      "500", //
+      CREATE_VENUE,
+      "'Cozy Comforts Venue'",
+      "CCV",
+      "200",
+      "500", //
+      CREATE_VENUE,
+      "'Charming Charm Hall'",
+      "CCH",
+      "220",
+      "500", //
+      CREATE_VENUE,
+      "'Refined Radiance Venue'",
+      "RRV",
+      "200",
+      "500", //
+      CREATE_VENUE,
+      "'Classy Celebration Venue'",
+      "TGB",
+      "150",
+      "1000", //
+      CREATE_VENUE,
+      "'Grand Gala Gardens'",
+      "GGG",
+      "260",
+      "1500", //
+      CREATE_VENUE,
+      "'Exclusive Elegance Venue'",
+      "EEV",
+      "350",
+      "1500", //
+      CREATE_VENUE,
+      "'Luxurious Legacy Hall'",
+      "LLH",
+      "800",
+      "2500", //
+  };
 
-    private static final Object[] CREATE_TEN_VENUES =
-        unpack(CREATE_NINE_VENUES, CREATE_VENUE, "'Majestic Monarch Mansion'", "MMM", "1000", "2500");
+  private static final Object[] CREATE_TEN_VENUES = unpack(CREATE_NINE_VENUES, CREATE_VENUE,
+      "'Majestic Monarch Mansion'", "MMM", "1000", "2500");
 
-    private static Object[] unpack(Object[] commands, Object... more) {
-      List<Object> all = new ArrayList<Object>();
-      all.addAll(List.of(commands));
-      all.addAll(List.of(more));
-      return all.toArray(new Object[all.size()]);
-    }
+  private static Object[] unpack(Object[] commands, Object... more) {
+    List<Object> all = new ArrayList<Object>();
+    all.addAll(List.of(commands));
+    all.addAll(List.of(more));
+    return all.toArray(new Object[all.size()]);
+  }
 
-    private static String[] options(String... options) {
-      List<String> all = new ArrayList<String>();
-      all.addAll(List.of(options));
-      return all.toArray(new String[all.size()]);
-    }
+  private static String[] options(String... options) {
+    List<String> all = new ArrayList<String>();
+    all.addAll(List.of(options));
+    return all.toArray(new String[all.size()]);
   }
 }

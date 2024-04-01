@@ -8,21 +8,21 @@ public class Floral extends Service {
   private String name;
 
   public Floral(String bookingReference, FloralType floralType) {
-      super(bookingReference);
-      this.floralType = floralType;
+    super(bookingReference);
+    this.floralType = floralType;
   }
 
   @Override
   public void addService() {
-      this.cost = floralType.getCost();
-      this.name = floralType.getName();
+    this.cost = floralType.getCost();
+    this.name = floralType.getName();
   }
 
   public int getCost() {
-      return cost;
+    return cost;
   }
-  
+
   public String getName() {
-      return name;
+    return name;
   }
 }
