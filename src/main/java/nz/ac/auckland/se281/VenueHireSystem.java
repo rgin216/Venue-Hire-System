@@ -377,8 +377,8 @@ public class VenueHireSystem {
       return;
     }
     // Create a new Music service and add it to the booking
-
-    bookings.get(matchIndex).addService();
+    Music music = new Music(bookingReference);
+    bookings.get(matchIndex).addService(music);
     MessageCli.ADD_SERVICE_SUCCESSFUL.printMessage("Music", bookingReference);
   }
 

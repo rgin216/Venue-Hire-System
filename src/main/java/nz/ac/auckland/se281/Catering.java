@@ -1,15 +1,30 @@
 package nz.ac.auckland.se281;
 
+import java.util.ArrayList;
+
 import nz.ac.auckland.se281.Types.CateringType;
 
 public class Catering extends Service {
   private CateringType cateringType;
   private int costPerPerson;
   private String name;
+  int num;
 
   public Catering(String bookingReference, CateringType cateringType) {
     super(bookingReference);
     this.cateringType = cateringType;
+  }
+
+  public int getCostPerPerson() {
+    return costPerPerson;
+  }
+
+  public void addNum(int num) {
+    this.num = num;
+  }
+
+  public String getName() {
+    return name;
   }
 
   @Override
@@ -18,11 +33,16 @@ public class Catering extends Service {
     this.name = cateringType.getName();
   }
 
-  public int getCostPerPerson() {
-    return costPerPerson;
+  @Override
+  public void printServices(ArrayList<Service> services) {
+    for (Service service : services) {
+      if (service instanceof Catering) {
+        Catering catering = (Catering) service;
+        totalCost += catering.getCostPerPerson() * num;
+        MessageCli.INVOICE_CONTENT_CATERING_ENTRY.printMessage(catering.getName(),
+            String.valueOf(num * catering.getCostPerPerson()));
+      }
+    }
   }
 
-  public String getName() {
-    return name;
-  }
 }

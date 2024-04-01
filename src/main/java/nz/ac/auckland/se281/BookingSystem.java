@@ -11,9 +11,7 @@ public class BookingSystem {
   private String customerEmail;
   private int numAttendees;
   private int venueFee;
-  private ArrayList<Catering> caterings = new ArrayList<Catering>();
-  private ArrayList<Floral> florals = new ArrayList<Floral>();
-  private boolean music = false;
+  private ArrayList<Service> services = new ArrayList<Service>();
 
   BookingSystem(String vCode, String reqDate, String cEmail, int numPpl, String bookingRef, String systemDate,
       String venueName, int venueFee) {
@@ -57,16 +55,18 @@ public class BookingSystem {
 
   public void addService(Catering catering) {
     catering.addService();
-    caterings.add(catering);
+    services.add(catering);
+    catering.addNum(numAttendees);
   }
 
   public void addService(Floral floral) {
     floral.addService();
-    florals.add(floral);
+    services.add(floral);
   }
 
-  public void addService() {
-    this.music = true;
+  public void addService(Music music) {
+    music.addService();
+    services.add(music);
   }
 
   public void printInvoice() {
@@ -81,19 +81,11 @@ public class BookingSystem {
 
     MessageCli.INVOICE_CONTENT_VENUE_FEE.printMessage(String.valueOf(venueFee));
 
-    for (Catering catering : caterings) {
-      totalCost += catering.getCostPerPerson() * num;
-      MessageCli.INVOICE_CONTENT_CATERING_ENTRY.printMessage(catering.getName(),
-          String.valueOf(num * catering.getCostPerPerson()));
+    for (Service service : services) {
+      service.printServices(services);
+      totalCost += service.getTotalCost();
     }
-    for (Floral floral : florals) {
-      totalCost += floral.getCost();
-      MessageCli.INVOICE_CONTENT_FLORAL_ENTRY.printMessage(floral.getName(), String.valueOf(floral.getCost()));
-    }
-    if (music) {
-      totalCost += 500;
-      MessageCli.INVOICE_CONTENT_MUSIC_ENTRY.printMessage(String.valueOf(500));
-    }
+
     MessageCli.INVOICE_CONTENT_BOTTOM_HALF.printMessage(String.valueOf(totalCost));
   }
 
