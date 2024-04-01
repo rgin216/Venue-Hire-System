@@ -14,6 +14,7 @@ public class VenueHireSystem {
   private String venueCode;
   private String capacityInput;
   private String hireFeeInput;
+  private int hireFee;
 
   VenueHireSystem() {
   }
@@ -175,6 +176,7 @@ public class VenueHireSystem {
       if (venues.get(i).getVenueCode().equals(options[0])) {
         venueName = venues.get(i).getVenueName();
         match = i;
+        hireFee = Integer.valueOf(venues.get(i).getHireFeeInput());
       }
     }
     if (match == -1) {
@@ -249,7 +251,7 @@ public class VenueHireSystem {
     // Bookings.
     String newBookingReference = BookingReferenceGenerator.generateBookingReference();
     BookingSystem booking = new BookingSystem(
-        options[0], options[1], options[2], Integer.valueOf(options[3]), newBookingReference, getSystemDate(), venueName);
+        options[0], options[1], options[2], Integer.valueOf(options[3]), newBookingReference, getSystemDate(), venueName, hireFee);
     bookings.add(booking);
     MessageCli.MAKE_BOOKING_SUCCESSFUL.printMessage(
         newBookingReference, venueName, options[1], options[3]);
@@ -374,8 +376,8 @@ public void addServiceMusic(String bookingReference) {
         return;
     }
     // Create a new Music service and add it to the booking
-    Music music = new Music(bookingReference);
-    bookings.get(matchIndex).addService(music);
+
+    bookings.get(matchIndex).addService();
     MessageCli.ADD_SERVICE_SUCCESSFUL.printMessage("Music", bookingReference);
 }
 

@@ -1,8 +1,6 @@
 package nz.ac.auckland.se281;
 
 import java.util.ArrayList;
-import nz.ac.auckland.se281.Types.CateringType;
-import nz.ac.auckland.se281.Types.FloralType;
 
 public class BookingSystem {
   private String venueCode;
@@ -12,18 +10,21 @@ public class BookingSystem {
   private String bookingReference;
   private String customerEmail;
   private int numAttendees;
-  private ArrayList<CateringType> caterings = new ArrayList<CateringType>();
-  private ArrayList<FloralType> florals = new ArrayList<FloralType>();
+  private int venueFee;
+  private ArrayList<Catering> caterings = new ArrayList<Catering>();
+  private ArrayList<Floral> florals = new ArrayList<Floral>();
   private boolean music = false;
 
-  BookingSystem(String vCode, String reqDate, String cEmail, int numPpl, String bookingRef, String systemDate, String venueName) {
+  BookingSystem(String vCode, String reqDate, String cEmail, int numPpl, String bookingRef, String systemDate,
+      String venueName, int venueFee) {
     this.venueCode = vCode;
     this.requestedDate = reqDate;
     this.customerEmail = cEmail;
     this.numAttendees = numPpl;
-    bookingReference = bookingRef;
+    this.bookingReference = bookingRef;
     this.systemDate = systemDate;
     this.venueName = venueName;
+    this.venueFee = venueFee;
   }
 
   public String getBookingVenueCode() {
@@ -54,29 +55,46 @@ public class BookingSystem {
     return venueName;
   }
 
-   public void addService(Catering catering) {
+  public void addService(Catering catering) {
     catering.addService();
+    caterings.add(catering);
   }
 
   public void addService(Floral floral) {
     floral.addService();
+    florals.add(floral);
   }
 
-  public void addService(Music music) {
-    music.addService();
+  public void addService() {
+    this.music = true;
   }
 
   public void printInvoice() {
     String ref = getBookingReference();
     String email = getEmail();
     String date = getSystemDate();
-    String pDate =  getRequestedDate();
-    String num = String.valueOf(getNumAttendees());
+    String pDate = getRequestedDate();
+    int num = getNumAttendees();
     String name = getVenueName();
-    // System.out.println(ref + email + date + pDate + num + name);
-    MessageCli.INVOICE_CONTENT_TOP_HALF.printMessage(ref, email, date, pDate, num, name);
-  }
+    int totalCost = venueFee;
+    MessageCli.INVOICE_CONTENT_TOP_HALF.printMessage(ref, email, date, pDate, String.valueOf(num), name);
 
-  
+    MessageCli.INVOICE_CONTENT_VENUE_FEE.printMessage(String.valueOf(venueFee));
+
+    for (Catering catering : caterings) {
+      totalCost += catering.getCostPerPerson() * num;
+      MessageCli.INVOICE_CONTENT_CATERING_ENTRY.printMessage(catering.getName(),
+          String.valueOf(num * catering.getCostPerPerson()));
+    }
+    for (Floral floral : florals) {
+      totalCost += floral.getCost();
+      MessageCli.INVOICE_CONTENT_FLORAL_ENTRY.printMessage(floral.getName(), String.valueOf(floral.getCost()));
+    }
+    if (music) {
+      totalCost += 500;
+      MessageCli.INVOICE_CONTENT_MUSIC_ENTRY.printMessage(String.valueOf(500));
+    }
+    MessageCli.INVOICE_CONTENT_BOTTOM_HALF.printMessage(String.valueOf(totalCost));
+  }
 
 }

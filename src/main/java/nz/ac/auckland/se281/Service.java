@@ -7,6 +7,10 @@ public abstract class Service {
       this.bookingReference = bookingReference;
   }
 
+  public String getBookingReference() {
+    return bookingReference;
+  }
+
 
   public abstract void addService();
 }
