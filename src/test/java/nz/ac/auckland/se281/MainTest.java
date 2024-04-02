@@ -16,7 +16,6 @@ import org.junit.runners.Suite.SuiteClasses;
     MainTest.Task1.class,
     MainTest.Task2.class,
     MainTest.Task3.class,
-
 })
 public class MainTest {
 
@@ -801,9 +800,41 @@ public class MainTest {
       }
 
       @Test
-      public void T4_01_add_your_own_tests_as_needed() throws Exception {
+      public void T3_16_add_your_own_tests_as_needed() throws Exception {
         runCommands(PRINT_VENUES);
         assertContains("There are no venues in the system. Please create a venue first.");
+      }
+
+      @Test
+      public void T3_17_add_all_types_off_services_total_printed() throws Exception {
+        runCommands(
+            unpack(
+                CREATE_TEN_VENUES,
+                SET_DATE,
+                "26/02/2024", //
+                MAKE_BOOKING,
+                options("GGG", "27/03/2024", "client001@email.com", "230"), //
+                ADD_CATERING,
+                "HUD14D8O",
+                options("B"), ADD_CATERING,
+                "HUD14D8O",
+                options("L"), ADD_MUSIC,
+                "HUD14D8O", ADD_FLORAL,
+                "HUD14D8O",
+                options("n"), ADD_FLORAL,
+                "HUD14D8O",
+                options("y"), //
+                VIEW_INVOICE,
+                "HUD14D8O"));
+
+        assertContains("Successfully added Catering (Breakfast) service to booking 'HUD14D8O'.");
+        assertContains("* Catering (Breakfast) - $3450");
+        assertContains("* Catering (Lunch) - $4600");
+        assertContains("* Music - $500");
+        assertContains("Floral (Standard) - $550");
+        assertContains("* Floral (Deluxe) - $1000");
+        assertContains("Total Amount: $11600");
+        assertDoesNotContain("not added", true);
       }
 
     }

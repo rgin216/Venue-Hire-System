@@ -1,6 +1,5 @@
 package nz.ac.auckland.se281;
 
-import java.util.ArrayList;
 
 public class Music extends Service {
   private int cost = 0;
@@ -15,8 +14,8 @@ public class Music extends Service {
   }
 
   @Override
-  public void printServices(ArrayList<Service> services) {
-    if (services.contains(this)) {
+  public void printServices(Service service) {
+    if (service instanceof Music) {
       MessageCli.INVOICE_CONTENT_MUSIC_ENTRY.printMessage(String.valueOf(cost));
       totalCost += cost;
     }

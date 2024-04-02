@@ -1,7 +1,5 @@
 package nz.ac.auckland.se281;
 
-import java.util.ArrayList;
-
 import nz.ac.auckland.se281.Types.CateringType;
 
 public class Catering extends Service {
@@ -34,14 +32,12 @@ public class Catering extends Service {
   }
 
   @Override
-  public void printServices(ArrayList<Service> services) {
-    for (Service service : services) {
-      if (service instanceof Catering) {
-        Catering catering = (Catering) service;
-        totalCost += catering.getCostPerPerson() * num;
-        MessageCli.INVOICE_CONTENT_CATERING_ENTRY.printMessage(catering.getName(),
-            String.valueOf(num * catering.getCostPerPerson()));
-      }
+  public void printServices(Service service) {
+    if (service instanceof Catering) {
+      Catering catering = (Catering) service;
+      totalCost += catering.getCostPerPerson() * num;
+      MessageCli.INVOICE_CONTENT_CATERING_ENTRY.printMessage(catering.getName(),
+          String.valueOf(num * catering.getCostPerPerson()));
     }
   }
 

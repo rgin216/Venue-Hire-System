@@ -82,7 +82,7 @@ public class BookingSystem {
     MessageCli.INVOICE_CONTENT_VENUE_FEE.printMessage(String.valueOf(venueFee));
 
     for (Service service : services) {
-      service.printServices(services);
+      service.printServices(service);
       totalCost += service.getTotalCost();
     }
 

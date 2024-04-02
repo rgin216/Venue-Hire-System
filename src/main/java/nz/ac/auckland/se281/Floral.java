@@ -1,7 +1,5 @@
 package nz.ac.auckland.se281;
 
-import java.util.ArrayList;
-
 import nz.ac.auckland.se281.Types.FloralType;
 
 public class Floral extends Service {
@@ -29,13 +27,13 @@ public class Floral extends Service {
   }
 
   @Override
-  public void printServices(ArrayList<Service> services) {
-    for (Service service : services) {
-      if (service instanceof Floral) {
-        Floral floral = (Floral) service;
-        totalCost += floral.getCost();
-        MessageCli.INVOICE_CONTENT_FLORAL_ENTRY.printMessage(floral.getName(), String.valueOf(floral.getCost()));
-      }
+  public void printServices(Service service) {
+
+    if (service instanceof Floral) {
+      Floral floral = (Floral) service;
+      totalCost += floral.getCost();
+      MessageCli.INVOICE_CONTENT_FLORAL_ENTRY.printMessage(floral.getName(), String.valueOf(floral.getCost()));
     }
+
   }
 }

@@ -1,6 +1,5 @@
 package nz.ac.auckland.se281;
 
-import java.util.ArrayList;
 
 public abstract class Service {
   private String bookingReference;
@@ -16,7 +15,7 @@ public abstract class Service {
 
   public abstract void addService();
 
-  public abstract void printServices(ArrayList<Service> services);
+  public abstract void printServices(Service service);
 
   public int getTotalCost() {
     return totalCost;
