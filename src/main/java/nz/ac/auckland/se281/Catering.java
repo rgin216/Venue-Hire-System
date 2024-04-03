@@ -6,7 +6,7 @@ public class Catering extends Service {
   private CateringType cateringType;
   private int costPerPerson;
   private String name;
-  int num;
+  private int num;
 
   public Catering(String bookingReference, CateringType cateringType) {
     super(bookingReference);
