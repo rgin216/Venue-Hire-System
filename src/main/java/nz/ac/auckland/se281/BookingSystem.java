@@ -13,11 +13,11 @@ public class BookingSystem {
   private int venueFee;
   private ArrayList<Service> services = new ArrayList<Service>();
 
-  BookingSystem(String vCode, String reqDate, String cEmail, int numPpl, String bookingRef, String systemDate,
-      String venueName, int venueFee) {
+  BookingSystem(String vCode, String reqDate, String cuEmail, int numPpl, String bookingRef, 
+      String systemDate, String venueName, int venueFee) {
     this.venueCode = vCode;
     this.requestedDate = reqDate;
-    this.customerEmail = cEmail;
+    this.customerEmail = cuEmail;
     this.numAttendees = numPpl;
     this.bookingReference = bookingRef;
     this.systemDate = systemDate;
@@ -70,14 +70,15 @@ public class BookingSystem {
   }
 
   public void printInvoice() {
+    //This method prints the whole invoice (top half, venue services, bottom half)
     String ref = getBookingReference();
     String email = getEmail();
     String date = getSystemDate();
-    String pDate = getRequestedDate();
+    String ptDate = getRequestedDate();
     int num = getNumAttendees();
     String name = getVenueName();
     int totalCost = venueFee;
-    MessageCli.INVOICE_CONTENT_TOP_HALF.printMessage(ref, email, date, pDate, String.valueOf(num), name);
+    MessageCli.INVOICE_CONTENT_TOP_HALF.printMessage(ref, email, date, ptDate, String.valueOf(num), name);
 
     MessageCli.INVOICE_CONTENT_VENUE_FEE.printMessage(String.valueOf(venueFee));
 
