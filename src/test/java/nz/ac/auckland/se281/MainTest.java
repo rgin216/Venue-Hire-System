@@ -36,7 +36,7 @@ public class MainTest {
 
     @Test
     public void T1_02_first_venue_created() throws Exception {
-      runCommands(CREATE_VENUE, "'Frugal Fiesta Hall'", "FFH", "80", "150");
+      runCommands(SET_DATE, "19/04/2024", CREATE_VENUE, "'Frugal Fiesta Hall'", "FFH", "80", "150", PRINT_VENUES);
 
       assertContains("Successfully created venue 'Frugal Fiesta Hall' (FFH).");
     }
@@ -67,7 +67,7 @@ public class MainTest {
 
     @Test
     public void T1_06_one_venue_saved() throws Exception {
-      runCommands(
+      runCommands(SET_DATE, "19/04/2024",
           CREATE_VENUE,
           "'Frugal Fiesta Hall'",
           "FFH",
@@ -82,7 +82,8 @@ public class MainTest {
 
     @Test
     public void T1_07_ten_venues_saved() throws Exception {
-      runCommands(unpack(CREATE_TEN_VENUES, PRINT_VENUES));
+
+      runCommands(unpack(CREATE_TEN_VENUES, SET_DATE, "19/04/2024", PRINT_VENUES));
 
       assertContains("Successfully created venue 'Frugal Fiesta Hall' (FFH).");
       assertContains("Successfully created venue 'Comfy Corner Events Centre' (CCEC).");
@@ -131,12 +132,6 @@ public class MainTest {
       assertContains("* Frugal Fiesta Hall (FFH) - 80 people - $150 base hire fee");
       assertDoesNotContain("two venue", true);
       assertDoesNotContain("2 venue", true);
-    }
-
-    public static class YourTests extends CliTest {
-      public YourTests() {
-        super(Main.class);
-      }
     }
   }
 

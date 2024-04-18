@@ -54,13 +54,13 @@ public class VenueHireSystem {
     if (venues.isEmpty()) {
       MessageCli.NO_VENUES.printMessage();
     } else if (venues.size() == 1) {
-      MessageCli.NUMBER_VENUES.printMessage("is", "one", getNextAvailableDate(venues.get(0)));
+      MessageCli.NUMBER_VENUES.printMessage("is", "one", "");
       MessageCli.VENUE_ENTRY.printMessage(
           venues.get(0).getVenueName(),
           venues.get(0).getVenueCode(),
           venues.get(0).getCapacityInput(),
           venues.get(0).getHireFeeInput(),
-          "");
+          getNextAvailableDate(venues.get(0)));
     }
 
     // When theres 2-9 venues
