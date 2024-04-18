@@ -760,9 +760,25 @@ public class MainTest {
         assertContains(
             "Booking not made: '27/02/1999' is in the past (system date is 26/02/2024).");
       }
+      @Test
+      public void T2_18_ensure_booking_date_isnot_inPast_and_beforeSystemDate() throws Exception {
+        runCommands(unpack(CREATE_TEN_VENUES,
+            SET_DATE,
+            "26/02/2024",
+            MAKE_BOOKING,
+            options("FFH", "27/02/2024", "client001@email.com", "70"), MAKE_BOOKING,
+            options("FFH", "26/02/2024", "client001@email.com", "70"), MAKE_BOOKING,
+            options("FFH", "27/02/2024", "client001@email.com", "70")));
+          assertContains(
+              "Successfully created booking");
+        assertContains(
+            "Booking not made: '27/02/2024' is in the past (system date is 26/02/2024).");
+            assertContains(
+            "Booking not made: '26/02/2024' is in the past (system date is 26/02/2024).");
+      }
 
       @Test
-      public void T2_18_make_booking_too_MANY_attendees() throws Exception {
+      public void T2_19_make_booking_too_MANY_attendees() throws Exception {
         runCommands(
             unpack(
                 CREATE_TEN_VENUES,
@@ -777,7 +793,7 @@ public class MainTest {
       }
 
       @Test
-      public void T2_19_attempt_to_book_without_venues() throws Exception {
+      public void T2_20_attempt_to_book_without_venues() throws Exception {
         runCommands(
 
             SET_DATE,
