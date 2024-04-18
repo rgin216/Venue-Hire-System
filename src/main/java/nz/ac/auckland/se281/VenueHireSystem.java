@@ -221,7 +221,6 @@ public class VenueHireSystem {
     if (matches.size() > 0) {
       for (int i : matches) {
         String[] existingDateParts = bookings.get(i).getRequestedDate().split("/");
-        System.out.println(existingDateParts);
         String existingDay = existingDateParts[0];
         String existingMonth = existingDateParts[1];
         String existingYear = existingDateParts[2];

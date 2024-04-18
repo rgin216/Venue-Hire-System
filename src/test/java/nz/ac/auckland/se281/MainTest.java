@@ -767,18 +767,44 @@ public class MainTest {
             "26/02/2024",
             MAKE_BOOKING,
             options("FFH", "27/02/2024", "client001@email.com", "70"), MAKE_BOOKING,
-            options("FFH", "26/02/2024", "client001@email.com", "70"), MAKE_BOOKING,
+            options("FFH", "25/02/2024", "client001@email.com", "70"), MAKE_BOOKING,
             options("FFH", "27/02/2024", "client001@email.com", "70")));
           assertContains(
-              "Successfully created booking");
+              "Successfully created booking 'HUD14D8O' for 'Frugal Fiesta Hall' on 27/02/2024 for 70 people.");
         assertContains(
-            "Booking not made: '27/02/2024' is in the past (system date is 26/02/2024).");
+            "Booking not made: '25/02/2024' is in the past (system date is 26/02/2024).");
             assertContains(
-            "Booking not made: '26/02/2024' is in the past (system date is 26/02/2024).");
+            "Booking not made: venue 'Frugal Fiesta Hall' is already booked on 27/02/2024.");
       }
 
       @Test
-      public void T2_19_make_booking_too_MANY_attendees() throws Exception {
+      public void T2_19_ensure_booking_date_isnot_inPast_and_beforeSystemDate_Plus_change_set_date_and_Print_Venues() throws Exception {
+        runCommands(unpack(CREATE_TEN_VENUES,
+            SET_DATE,
+            "26/02/2024",
+            MAKE_BOOKING,
+            options("FFH", "27/02/2024", "client001@email.com", "70"), PRINT_BOOKINGS,
+            "FFH", PRINT_VENUES, MAKE_BOOKING,
+            options("FFH", "26/02/2024", "client001@email.com", "70"), PRINT_BOOKINGS,
+            "FFH",MAKE_BOOKING,
+            options("FFH", "27/02/2024", "client001@email.com", "70"), MAKE_BOOKING,
+            options("FFH", "25/02/2024", "client001@email.com", "70"), PRINT_BOOKINGS,
+            "FFH", PRINT_VENUES, SET_DATE, "29/02/2024", PRINT_VENUES));
+          assertContains(
+              "Successfully created booking 'HUD14D8O' for 'Frugal Fiesta Hall' on 27/02/2024 for 70 people.");
+              assertContains(
+              "Successfully created booking 'ZP4HRCZ4' for 'Frugal Fiesta Hall' on 26/02/2024 for 70 people.");
+        assertContains(
+            "Booking not made: '25/02/2024' is in the past (system date is 26/02/2024).");
+            assertContains(
+            "Booking not made: venue 'Frugal Fiesta Hall' is already booked on 27/02/2024.");
+            assertContains("* Frugal Fiesta Hall (FFH) - 80 people - $250 base hire fee. Next available on 28/02/2024");
+            assertContains("* Frugal Fiesta Hall (FFH) - 80 people - $250 base hire fee. Next available on 29/02/2024");
+
+      }
+
+      @Test
+      public void T2_20_make_booking_too_MANY_attendees() throws Exception {
         runCommands(
             unpack(
                 CREATE_TEN_VENUES,
@@ -793,7 +819,7 @@ public class MainTest {
       }
 
       @Test
-      public void T2_20_attempt_to_book_without_venues() throws Exception {
+      public void T2_21_attempt_to_book_without_venues() throws Exception {
         runCommands(
 
             SET_DATE,
