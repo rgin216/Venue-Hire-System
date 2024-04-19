@@ -187,26 +187,31 @@ public class VenueHireSystem {
     // Checking if the booking date is not earlier than the set date
     String[] setDateParts = dateInput.split("/");
 
-    String setDay = setDateParts[0];
-    String setMonth = setDateParts[1];
-    String setYear = setDateParts[2];
+    int setDay = Integer.parseInt(setDateParts[0]);
+    int setMonth = Integer.parseInt(setDateParts[1]);
+    int setYear = Integer.parseInt(setDateParts[2]);
 
     String[] bookingDateParts = options[1].split("/");
-    String bookingDay = bookingDateParts[0];
-    String bookingMonth = bookingDateParts[1];
-    String bookingYear = bookingDateParts[2];
+    int bookingDay = Integer.parseInt(bookingDateParts[0]);
+    int bookingMonth = Integer.parseInt(bookingDateParts[1]);
+    int bookingYear = Integer.parseInt(bookingDateParts[2]);
 
-    if (Integer.valueOf(setYear) > Integer.valueOf(bookingYear)) {
-      MessageCli.BOOKING_NOT_MADE_PAST_DATE.printMessage(options[1], dateInput);
-      System.out.println(setYear + bookingYear);
-      return;
-    } else if (Integer.valueOf(setMonth) > Integer.valueOf(bookingMonth)) {
+   
+
+    if (setYear > bookingYear) {
       MessageCli.BOOKING_NOT_MADE_PAST_DATE.printMessage(options[1], dateInput);
       return;
-    } else if (Integer.valueOf(setDay) > Integer.valueOf(bookingDay)) {
-      MessageCli.BOOKING_NOT_MADE_PAST_DATE.printMessage(options[1], dateInput);
-      return;
-    }
+  } else if (setYear == bookingYear) {
+      if (setMonth > bookingMonth) {
+          MessageCli.BOOKING_NOT_MADE_PAST_DATE.printMessage(options[1], dateInput);
+          return;
+      } else if (setYear == bookingYear && setMonth == bookingMonth) {
+          if (setDay > bookingDay) {
+              MessageCli.BOOKING_NOT_MADE_PAST_DATE.printMessage(options[1], dateInput);
+              return;
+          }
+      }
+  }
 
     // Check if that venuecode has already dates made on that same day
 
@@ -221,12 +226,12 @@ public class VenueHireSystem {
     if (matches.size() > 0) {
       for (int i : matches) {
         String[] existingDateParts = bookings.get(i).getRequestedDate().split("/");
-        String existingDay = existingDateParts[0];
-        String existingMonth = existingDateParts[1];
-        String existingYear = existingDateParts[2];
-        if (existingDay.equals(bookingDay)
-            && existingMonth.equals(bookingMonth)
-            && existingYear.equals(bookingYear)) {
+        int existingDay = Integer.parseInt(existingDateParts[0]);
+        int existingMonth = Integer.parseInt(existingDateParts[1]);
+        int existingYear = Integer.parseInt(existingDateParts[2]);
+        if (existingDay == bookingDay
+            && existingMonth == bookingMonth
+            && existingYear == bookingYear) {
           MessageCli.BOOKING_NOT_MADE_VENUE_ALREADY_BOOKED.printMessage(venueName, options[1]);
           return;
         }
